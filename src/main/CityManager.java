@@ -5,6 +5,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
+/**
+ * The main class which provides most of the back-end functionality to the program
+ * @author Simon
+ *
+ */
 public class CityManager {
 	
 	private Screen screen;
@@ -74,7 +79,11 @@ public class CityManager {
 		screen.deleteTrafficTable.addActionListener(new DeleteTrafficTableListener());
 	}
 	
-	//Returns a matrix with the table contents
+	/**
+	 * Returns a matrix with the content of the table
+	 * @param table The JTable to draw content from
+	 * @return A two-dimensional array with the content of the table
+	 */
 	private Object[][] readTable(JTable table) {
 		TableModel tm = table.getModel();
 		int numRows = tm.getRowCount();
@@ -88,7 +97,10 @@ public class CityManager {
 		return tableData;
 	}
 	
-	//Prints the contents of a table into the console
+	/**
+	 * Prints the JTable to the console
+	 * @param table The JTable to be printed
+	 */
 	private void printTable(JTable table) {
 		Object[][] matrix = readTable(table);
 		for(int i = 0; i < table.getModel().getRowCount(); i++) {
@@ -96,7 +108,11 @@ public class CityManager {
 		}
 	}
 	
-	//Changes the table size
+	/**
+	 * Changes the table size by altering it's TableModel
+	 * @param table The JTable that has to be changed
+	 * @param op Whether to increase or to decrease the size of the table; must be '+' or '-'
+	 */
 	private void changeTableSize(JTable table, char op) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		if(op == '+') {
@@ -109,8 +125,12 @@ public class CityManager {
 		screen.setColumnSize(table, 30);
 	}
 	
-	//Used for inserting existing data into a table
 	//May throw ArrayIndexOutOfBoundsException if data-matrix is too small
+	/**
+	 * Inserts data from a matrix into the table
+	 * @param table The table to be filled
+	 * @param data A two-dimensional array with the data
+	 */
 	@SuppressWarnings("unused")
 	private void fillTable(JTable table, Object[][] data) {
 		TableModel tm = table.getModel();
@@ -123,6 +143,10 @@ public class CityManager {
 		}
 	}
 	
+	/**
+	 * Replaces all fields of the table with <code>null</code> values
+	 * @param table The table to be deleted
+	 */
 	private void deleteTableData(JTable table) {
 		TableModel tm = table.getModel();
 		int numRows = tm.getRowCount();

@@ -4,6 +4,11 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 
+/**
+ * The class that provides the front-end view of the program
+ * @author Simon
+ *
+ */
 public class Screen {
 	
 	//For the entire application
