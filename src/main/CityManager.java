@@ -1,0 +1,345 @@
+package main;
+
+import java.util.Arrays;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.table.*;
+
+public class CityManager {
+	
+	private Screen screen;
+	public Object[][] roadData;
+	public Object[][] waterData;
+	public Object[][] elecData;
+	public Object[][] fireworksData;
+	public Object[][] invitationsData;
+	public Object[][] trafficData;
+	private JFileChooser fc = new JFileChooser();
+	
+	public void run() {
+		screen = new Screen();
+		addMainMenuListeners();
+	}
+	
+	private void addMainMenuListeners() {
+		screen.selectFileButton.addActionListener(new FileButtonListener());
+		screen.roads.addActionListener(new RoadsListener());
+		screen.water.addActionListener(new WaterListener());
+		screen.electricity.addActionListener(new ElectricityListener());
+		screen.fireworks.addActionListener(new FireworksListener());
+		screen.invitations.addActionListener(new InvitationsListener());
+		screen.traffic.addActionListener(new TrafficListener());
+		screen.employees.addActionListener(new EmployeesListener());
+	}
+	
+	private void addRoadsListeners() {
+		screen.roadSaveChanges.addActionListener(new RoadSaveListener());
+		screen.roadSizePlus.addActionListener(new RoadSizePlusListener());
+		screen.roadSizeMinus.addActionListener(new RoadSizeMinusListener());
+		screen.deleteRoadTable.addActionListener(new DeleteRoadTableListener());
+	}
+	
+	private void addWaterListeners() {
+		screen.waterSaveChanges.addActionListener(new WaterSaveListener());
+		screen.waterSizePlus.addActionListener(new WaterSizePlusListener());
+		screen.waterSizeMinus.addActionListener(new WaterSizeMinusListener());
+		screen.deleteWaterTable.addActionListener(new DeleteWaterTableListener());
+	}
+	
+	private void addElecListeners() {
+		screen.elecSaveChanges.addActionListener(new ElecSaveListener());
+		screen.elecSizePlus.addActionListener(new ElecSizePlusListener());
+		screen.elecSizeMinus.addActionListener(new ElecSizeMinusListener());
+		screen.deleteElecTable.addActionListener(new DeleteElecTableListener());
+	}
+	
+	private void addFireworksListeners() {
+		screen.fireworksSaveChanges.addActionListener(new FireworksSaveListener());
+		screen.fireworksSizePlus.addActionListener(new FireworksSizePlusListener());
+		screen.fireworksSizeMinus.addActionListener(new FireworksSizeMinusListener());
+		screen.deleteFireworksTable.addActionListener(new DeleteFireworksTableListener());
+	}
+	
+	private void addInvitationsListeners() {
+		screen.invitationsSaveChanges.addActionListener(new InvitationsSaveListener());
+		screen.invitationsSizePlus.addActionListener(new InvitationsSizePlusListener());
+		screen.invitationsSizeMinus.addActionListener(new InvitationsSizeMinusListener());
+		screen.deleteInvitationsTable.addActionListener(new DeleteInvitationsTableListener());
+	}
+	
+	private void addTrafficListeners() {
+		screen.trafficSaveChanges.addActionListener(new TrafficSaveListener());
+		screen.trafficSizePlus.addActionListener(new TrafficSizePlusListener());
+		screen.trafficSizeMinus.addActionListener(new TrafficSizeMinusListener());
+		screen.deleteTrafficTable.addActionListener(new DeleteTrafficTableListener());
+	}
+	
+	//Returns a matrix with the table contents
+	private Object[][] readTable(JTable table) {
+		TableModel tm = table.getModel();
+		int numRows = tm.getRowCount();
+		int numCols = tm.getColumnCount();
+		Object[][] tableData = new Object[numRows][numCols];
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numCols; j++) {
+				tableData[i][j] = tm.getValueAt(i, j);
+			}
+		}
+		return tableData;
+	}
+	
+	//Prints the contents of a table into the console
+	private void printTable(JTable table) {
+		Object[][] matrix = readTable(table);
+		for(int i = 0; i < table.getModel().getRowCount(); i++) {
+			System.out.println(Arrays.toString(matrix[i]));
+		}
+	}
+	
+	//Changes the table size
+	private void changeTableSize(JTable table, char op) {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		if(op == '+') {
+			model.setRowCount(model.getRowCount() + 1);
+			model.setColumnCount(model.getColumnCount() + 1);
+		} else if(op == '-') {
+			model.setRowCount(model.getRowCount() - 1);
+			model.setColumnCount(model.getColumnCount() - 1);
+		}
+		screen.setColumnSize(table, 30);
+	}
+	
+	//Used for inserting existing data into a table
+	//May throw ArrayIndexOutOfBoundsException if data-matrix is too small
+	@SuppressWarnings("unused")
+	private void fillTable(JTable table, Object[][] data) {
+		TableModel tm = table.getModel();
+		int numRows = data.length;
+		int numCols = data[0].length;
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numCols; j++) {
+				tm.setValueAt(data[i][j], i, j);
+			}
+		}
+	}
+	
+	private void deleteTableData(JTable table) {
+		TableModel tm = table.getModel();
+		int numRows = tm.getRowCount();
+		int numCols = tm.getColumnCount();
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numCols; j++) {
+				tm.setValueAt(null, i, j);
+			}
+		}
+	}
+	
+	
+	
+	//MainMenu listeners
+	private class FileButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			fc.showOpenDialog(screen.frame);
+			if(fc.getSelectedFile() != null) {
+				screen.selectedFileName = fc.getSelectedFile().getName();
+				screen.fileNameLabel.setText("Datei: " + screen.selectedFileName);
+			}
+		}
+	}
+	private class RoadsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createRoadScreen();
+			addRoadsListeners();
+			screen.back.addActionListener(new BackListener());
+		}
+	}
+	private class WaterListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createWaterScreen();
+			addWaterListeners();
+			screen.back.addActionListener(new BackListener());
+		}
+	}
+	private class ElectricityListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createElectricityScreen();
+			addElecListeners();
+			screen.back.addActionListener(new BackListener());
+		}
+	}
+	private class FireworksListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createFireworksScreen();
+			addFireworksListeners();
+			screen.back.addActionListener(new BackListener());
+		}
+	}
+	private class InvitationsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createInvitationsScreen();
+			addInvitationsListeners();
+			screen.back.addActionListener(new BackListener());
+		}
+	}
+	private class TrafficListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createTrafficScreen();
+			addTrafficListeners();
+			screen.back.addActionListener(new BackListener());
+		}
+	}
+	private class EmployeesListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createEmployeesScreen();
+			screen.back.addActionListener(new BackListener());
+		}
+	}
+	
+	//The handler for the back button used on the function screens
+	private class BackListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createMainScreen();
+			addMainMenuListeners();
+		}
+	}
+	
+	//Handlers for the Roads screen
+	private class RoadSaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			roadData = readTable(screen.roadTable);
+			printTable(screen.roadTable);
+		}
+	}
+	private class RoadSizePlusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.roadTable, '+');
+		}
+	}
+	private class RoadSizeMinusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.roadTable, '-');
+		}
+	}
+	private class DeleteRoadTableListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			deleteTableData(screen.roadTable);
+		}
+	}
+	
+	// Handlers for the Water screen
+	private class WaterSaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			roadData = readTable(screen.waterTable);
+			printTable(screen.waterTable);
+		}
+	}
+	private class WaterSizePlusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.waterTable, '+');
+		}
+	}
+	private class WaterSizeMinusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.waterTable, '-');
+		}
+	}
+	private class DeleteWaterTableListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			deleteTableData(screen.waterTable);
+		}
+	}
+	
+	//Handlers for the electricity screen
+	private class ElecSaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			elecData = readTable(screen.elecTable);
+			printTable(screen.elecTable);
+		}
+	}
+	private class ElecSizePlusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.elecTable, '+');
+		}
+	}
+	private class ElecSizeMinusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.elecTable, '-');
+		}
+	}
+	private class DeleteElecTableListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			deleteTableData(screen.elecTable);
+		}
+	}
+	
+	//Handlers for the fireworks screen
+	private class FireworksSaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			elecData = readTable(screen.fireworksTable);
+			printTable(screen.fireworksTable);
+		}
+	}
+	private class FireworksSizePlusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.fireworksTable, '+');
+		}
+	}
+	private class FireworksSizeMinusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.fireworksTable, '-');
+		}
+	}
+	private class DeleteFireworksTableListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			deleteTableData(screen.fireworksTable);
+		}
+	}
+	
+	//Handlers for the invitations screen
+	private class InvitationsSaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			invitationsData = readTable(screen.invitationsTable);
+			printTable(screen.invitationsTable);
+		}
+	}
+	private class InvitationsSizePlusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.invitationsTable, '+');
+		}
+	}
+	private class InvitationsSizeMinusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.invitationsTable, '-');
+		}
+	}
+	private class DeleteInvitationsTableListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			deleteTableData(screen.invitationsTable);
+		}
+	}
+	
+	//Handlers for the traffic screen
+	private class TrafficSaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			trafficData = readTable(screen.trafficTable);
+			printTable(screen.trafficTable);
+		}
+	}
+	private class TrafficSizePlusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.trafficTable, '+');
+		}
+	}
+	private class TrafficSizeMinusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.trafficTable, '-');
+		}
+	}
+	private class DeleteTrafficTableListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			deleteTableData(screen.trafficTable);
+		}
+	}
+	
+	
+}
