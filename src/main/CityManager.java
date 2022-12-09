@@ -27,7 +27,7 @@ public class CityManager {
 	}
 	
 	private void addMainMenuListeners() {
-		screen.selectFileButton.addActionListener(new FileButtonListener());
+//		screen.selectFileButton.addActionListener(new FileButtonListener());
 		screen.roads.addActionListener(new RoadsListener());
 		screen.water.addActionListener(new WaterListener());
 		screen.electricity.addActionListener(new ElectricityListener());
@@ -161,15 +161,6 @@ public class CityManager {
 	
 	
 	//MainMenu listeners
-	private class FileButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			fc.showOpenDialog(screen.frame);
-			if(fc.getSelectedFile() != null) {
-				screen.selectedFileName = fc.getSelectedFile().getName();
-				screen.fileNameLabel.setText("Datei: " + screen.selectedFileName);
-			}
-		}
-	}
 	private class RoadsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			screen.createRoadScreen();

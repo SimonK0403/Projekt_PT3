@@ -18,10 +18,6 @@ public class Screen {
 	public String selectedFileName = "";
 	private Dimension standardOpButtonSize = new Dimension(100, 30);
 	//For the main screen
-	private JPanel mainPanelLeft;
-	private JPanel mainPanelRight;
-	public JButton selectFileButton;
-	public JLabel fileNameLabel;
 	public JButton roads;
 	public JButton water;
 	public JButton electricity;
@@ -32,8 +28,9 @@ public class Screen {
 	//For road screen
 	private JPanel roadPanel;
 	private JPanel roadOpPanel;
-	public DefaultTableModel roadTableModel = new DefaultTableModel(9, 9); //Declared separately to save the contents on page reload
+	public DefaultTableModel roadTableModel = new DefaultTableModel(10, 10); //Declared separately to save the contents on page reload
 	public JTable roadTable;
+	public JButton roadReadFile;
 	public JButton roadSaveChanges;
 	public JButton roadSizePlus;
 	public JButton roadSizeMinus;
@@ -42,10 +39,11 @@ public class Screen {
 	//For water screen
 	private JPanel waterPanel;
 	private JPanel waterOpPanel;
-	public DefaultTableModel waterTableModel = new DefaultTableModel(9, 9);
+	public DefaultTableModel waterTableModel = new DefaultTableModel(10, 10);
 	public JTable waterTable;
 	public JLabel waterNeededDesc;
 	public JTextField waterNeeded;
+	public JButton waterReadFile;
 	public JButton waterSaveChanges;
 	public JButton waterSizePlus;
 	public JButton waterSizeMinus;
@@ -54,8 +52,9 @@ public class Screen {
 	//For electricity screen
 	private JPanel elecPanel;
 	private JPanel elecOpPanel;
-	public DefaultTableModel elecTableModel = new DefaultTableModel(9, 9);
+	public DefaultTableModel elecTableModel = new DefaultTableModel(10, 10);
 	public JTable elecTable;
+	public JButton elecReadFile;
 	public JButton elecSaveChanges;
 	public JButton elecSizePlus;
 	public JButton elecSizeMinus;
@@ -64,8 +63,9 @@ public class Screen {
 	//For fireworks screen
 	private JPanel fireworksPanel;
 	private JPanel fireworksOpPanel;
-	public DefaultTableModel fireworksTableModel = new DefaultTableModel(8, 8);
+	public DefaultTableModel fireworksTableModel = new DefaultTableModel(10, 10);
 	public JTable fireworksTable;
+	public JButton fireworksReadFile;
 	public JButton fireworksSaveChanges;
 	public JButton fireworksSizePlus;
 	public JButton fireworksSizeMinus;
@@ -74,8 +74,9 @@ public class Screen {
 	//For invitations screen
 	private JPanel invitationsPanel;
 	private JPanel invitationsOpPanel;
-	public DefaultTableModel invitationsTableModel = new DefaultTableModel(9, 9);
+	public DefaultTableModel invitationsTableModel = new DefaultTableModel(10, 10);
 	public JTable invitationsTable;
+	public JButton invitationsReadFile;
 	public JButton invitationsSaveChanges;
 	public JButton invitationsSizePlus;
 	public JButton invitationsSizeMinus;
@@ -84,8 +85,9 @@ public class Screen {
 	//For traffic screen
 	private JPanel trafficPanel;
 	private JPanel trafficOpPanel;
-	public DefaultTableModel trafficTableModel = new DefaultTableModel(6, 6);
+	public DefaultTableModel trafficTableModel = new DefaultTableModel(10, 10);
 	public JTable trafficTable;
+	public JButton trafficReadFile;
 	public JButton trafficSaveChanges;
 	public JButton trafficSizePlus;
 	public JButton trafficSizeMinus;
@@ -111,9 +113,50 @@ public class Screen {
 
 	public void createMainScreen() {
 		mainPanel.removeAll();
-		mainPanel.setLayout(new GridLayout(1, 2));
-		createLeftMainPanel();
-		createRightMainPanel();
+		mainPanel.setLayout(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(5, 0, 5, 0);
+		
+		//Aligns all buttons below each other
+		roads = new JButton("Straßenanbindung");
+		c.gridy = 0;
+		mainPanel.add(roads, c);
+		
+		water = new JButton("Wasserversorgung");
+		c.gridy = 1;
+		mainPanel.add(water, c);
+		
+		electricity = new JButton("Stromversorgung");
+		c.gridy = 2;
+		mainPanel.add(electricity, c);
+		
+		fireworks = new JButton("Feuerwerk");
+		c.gridy = 3;
+		mainPanel.add(fireworks, c);
+		
+		invitations = new JButton("Verteilung der Einladungen");
+		c.gridy = 4;
+		mainPanel.add(invitations, c);
+		
+		traffic = new JButton("Verkehrsplanung");
+		c.gridy = 5;
+		mainPanel.add(traffic, c);
+		
+		employees = new JButton("Kompetenzenverwaltung");
+		c.gridy = 6;
+		mainPanel.add(employees, c);
+		
+		//The size of the buttons
+		Dimension mainButtonSize = new Dimension(500, 50);
+		roads.setPreferredSize(mainButtonSize);
+		water.setPreferredSize(mainButtonSize);
+		electricity.setPreferredSize(mainButtonSize);
+		fireworks.setPreferredSize(mainButtonSize);
+		invitations.setPreferredSize(mainButtonSize);
+		traffic.setPreferredSize(mainButtonSize);
+		employees.setPreferredSize(mainButtonSize);
+		
 		frame.setContentPane(mainPanel);
 		mainPanel.repaint();
 	}
@@ -143,26 +186,31 @@ public class Screen {
 		d.insets = new Insets(5, 0, 5, 0);
 		d.anchor = GridBagConstraints.WEST;
 		
-		roadSaveChanges = new JButton("Speichern");
+		roadReadFile = new JButton("Einlesen");
 		d.gridy = 0;
+		roadOpPanel.add(roadReadFile, d);
+		
+		roadSaveChanges = new JButton("Speichern");
+		d.gridy = 1;
 		roadOpPanel.add(roadSaveChanges, d);
 		
 		roadSizePlus = new JButton("+");
-		d.gridy = 1;
+		d.gridy = 2;
 		roadOpPanel.add(roadSizePlus, d);
 		
 		roadSizeMinus = new JButton("-");
-		d.gridy = 2;
+		d.gridy = 3;
 		roadOpPanel.add(roadSizeMinus, d);
 		
 		calculateRoads = new JButton("Berechnen");
-		d.gridy = 3;
+		d.gridy = 4;
 		roadOpPanel.add(calculateRoads, d);
 		
 		deleteRoadTable = new JButton("Löschen");
-		d.gridy = 4;
+		d.gridy = 5;
 		roadOpPanel.add(deleteRoadTable, d);
 		
+		roadReadFile.setPreferredSize(standardOpButtonSize);
 		roadSaveChanges.setPreferredSize(standardOpButtonSize);
 		roadSizePlus.setPreferredSize(standardOpButtonSize);
 		roadSizeMinus.setPreferredSize(standardOpButtonSize);
@@ -205,27 +253,32 @@ public class Screen {
 		d.gridy = 1;
 		waterOpPanel.add(waterNeeded, d);
 		
-		waterSaveChanges = new JButton("Speichern");
+		waterReadFile = new JButton("Einlesen");
 		d.gridy = 2;
+		waterOpPanel.add(waterReadFile, d);
+		
+		waterSaveChanges = new JButton("Speichern");
+		d.gridy = 3;
 		waterOpPanel.add(waterSaveChanges, d);
 		
 		waterSizePlus = new JButton("+");
-		d.gridy = 3;
+		d.gridy = 4;
 		waterOpPanel.add(waterSizePlus, d);
 		
 		waterSizeMinus = new JButton("-");
-		d.gridy = 4;
+		d.gridy = 5;
 		waterOpPanel.add(waterSizeMinus, d);
 		
 		calculateWater = new JButton("Berechnen");
-		d.gridy = 5;
+		d.gridy = 6;
 		waterOpPanel.add(calculateWater, d);
 		
 		deleteWaterTable = new JButton("Löschen");
-		d.gridy = 6;
+		d.gridy = 7;
 		waterOpPanel.add(deleteWaterTable, d);
 
 		waterNeeded.setPreferredSize(standardOpButtonSize);
+		waterReadFile.setPreferredSize(standardOpButtonSize);
 		waterSaveChanges.setPreferredSize(standardOpButtonSize);
 		waterSizePlus.setPreferredSize(standardOpButtonSize);
 		waterSizeMinus.setPreferredSize(standardOpButtonSize);
@@ -261,26 +314,31 @@ public class Screen {
 		d.insets = new Insets(5, 0, 5, 0);
 		d.anchor = GridBagConstraints.WEST;
 		
-		elecSaveChanges = new JButton("Speichern");
+		elecReadFile = new JButton("Einlesen");
 		d.gridy = 0;
+		elecOpPanel.add(elecReadFile, d);
+		
+		elecSaveChanges = new JButton("Speichern");
+		d.gridy = 1;
 		elecOpPanel.add(elecSaveChanges, d);
 		
 		elecSizePlus = new JButton("+");
-		d.gridy = 1;
+		d.gridy = 2;
 		elecOpPanel.add(elecSizePlus, d);
 		
 		elecSizeMinus = new JButton("-");
-		d.gridy = 2;
+		d.gridy = 3;
 		elecOpPanel.add(elecSizeMinus, d);
 		
 		calculateElec = new JButton("Berechnen");
-		d.gridy = 3;
+		d.gridy = 4;
 		elecOpPanel.add(calculateElec, d);
 		
 		deleteElecTable = new JButton("Löschen");
-		d.gridy = 4;
+		d.gridy = 5;
 		elecOpPanel.add(deleteElecTable, d);
-
+		
+		elecReadFile.setPreferredSize(standardOpButtonSize);
 		elecSaveChanges.setPreferredSize(standardOpButtonSize);
 		elecSizePlus.setPreferredSize(standardOpButtonSize);
 		elecSizeMinus.setPreferredSize(standardOpButtonSize);
@@ -316,26 +374,31 @@ public class Screen {
 		d.insets = new Insets(5, 0, 5, 0);
 		d.anchor = GridBagConstraints.WEST;
 		
-		fireworksSaveChanges = new JButton("Speichern");
+		fireworksReadFile = new JButton("Einlesen");
 		d.gridy = 0;
+		fireworksOpPanel.add(fireworksReadFile, d);
+		
+		fireworksSaveChanges = new JButton("Speichern");
+		d.gridy = 1;
 		fireworksOpPanel.add(fireworksSaveChanges, d);
 		
 		fireworksSizePlus = new JButton("+");
-		d.gridy = 1;
+		d.gridy = 2;
 		fireworksOpPanel.add(fireworksSizePlus, d);
 		
 		fireworksSizeMinus = new JButton("-");
-		d.gridy = 2;
+		d.gridy = 3;
 		fireworksOpPanel.add(fireworksSizeMinus, d);
 		
 		calculateFireworks = new JButton("Berechnen");
-		d.gridy = 3;
+		d.gridy = 4;
 		fireworksOpPanel.add(calculateFireworks, d);
 		
 		deleteFireworksTable = new JButton("Löschen");
-		d.gridy = 4;
+		d.gridy = 5;
 		fireworksOpPanel.add(deleteFireworksTable, d);
-
+		
+		fireworksReadFile.setPreferredSize(standardOpButtonSize);
 		fireworksSaveChanges.setPreferredSize(standardOpButtonSize);
 		fireworksSizePlus.setPreferredSize(standardOpButtonSize);
 		fireworksSizeMinus.setPreferredSize(standardOpButtonSize);
@@ -371,26 +434,31 @@ public class Screen {
 		d.insets = new Insets(5, 0, 5, 0);
 		d.anchor = GridBagConstraints.WEST;
 		
-		invitationsSaveChanges = new JButton("Speichern");
+		invitationsReadFile = new JButton("Einlesen");
 		d.gridy = 0;
+		invitationsOpPanel.add(invitationsReadFile, d);
+		
+		invitationsSaveChanges = new JButton("Speichern");
+		d.gridy = 1;
 		invitationsOpPanel.add(invitationsSaveChanges, d);
 		
 		invitationsSizePlus = new JButton("+");
-		d.gridy = 1;
+		d.gridy = 2;
 		invitationsOpPanel.add(invitationsSizePlus, d);
 		
 		invitationsSizeMinus = new JButton("-");
-		d.gridy = 2;
+		d.gridy = 3;
 		invitationsOpPanel.add(invitationsSizeMinus, d);
 		
 		calculateInvitations = new JButton("Berechnen");
-		d.gridy = 3;
+		d.gridy = 4;
 		invitationsOpPanel.add(calculateInvitations, d);
 		
 		deleteInvitationsTable = new JButton("Löschen");
-		d.gridy = 4;
+		d.gridy = 5;
 		invitationsOpPanel.add(deleteInvitationsTable, d);
-
+		
+		invitationsReadFile.setPreferredSize(standardOpButtonSize);
 		invitationsSaveChanges.setPreferredSize(standardOpButtonSize);
 		invitationsSizePlus.setPreferredSize(standardOpButtonSize);
 		invitationsSizeMinus.setPreferredSize(standardOpButtonSize);
@@ -426,26 +494,31 @@ public class Screen {
 		d.insets = new Insets(5, 0, 5, 0);
 		d.anchor = GridBagConstraints.WEST;
 		
-		trafficSaveChanges = new JButton("Speichern");
+		trafficReadFile = new JButton("Einlesen");
 		d.gridy = 0;
+		trafficOpPanel.add(trafficReadFile, d);
+		
+		trafficSaveChanges = new JButton("Speichern");
+		d.gridy = 1;
 		trafficOpPanel.add(trafficSaveChanges, d);
 		
 		trafficSizePlus = new JButton("+");
-		d.gridy = 1;
+		d.gridy = 2;
 		trafficOpPanel.add(trafficSizePlus, d);
 		
 		trafficSizeMinus = new JButton("-");
-		d.gridy = 2;
+		d.gridy = 3;
 		trafficOpPanel.add(trafficSizeMinus, d);
 		
 		calculateTraffic = new JButton("Berechnen");
-		d.gridy = 3;
+		d.gridy = 4;
 		trafficOpPanel.add(calculateTraffic, d);
 		
 		deleteTrafficTable = new JButton("Löschen");
-		d.gridy = 4;
+		d.gridy = 5;
 		trafficOpPanel.add(deleteTrafficTable, d);
-
+		
+		trafficReadFile.setPreferredSize(standardOpButtonSize);
 		trafficSaveChanges.setPreferredSize(standardOpButtonSize);
 		trafficSizePlus.setPreferredSize(standardOpButtonSize);
 		trafficSizeMinus.setPreferredSize(standardOpButtonSize);
@@ -471,71 +544,6 @@ public class Screen {
 		northPanel.add(back);
 		back.setPreferredSize(new Dimension(100, 30));
 		parent.add(northPanel, BorderLayout.NORTH);
-	}
-	
-	private void createLeftMainPanel() {
-		mainPanelLeft = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(5, 0, 5, 0);
-		
-		selectFileButton = new JButton("Speicherdatei auswählen");
-		c.gridy = 0;
-		mainPanelLeft.add(selectFileButton, c);
-		
-		fileNameLabel = new JLabel("Datei:" + selectedFileName);
-		c.gridy = 1;
-		mainPanelLeft.add(fileNameLabel, c);
-		
-		selectFileButton.setPreferredSize(new Dimension(200, 30));
-		
-		mainPanel.add(mainPanelLeft);
-	}
-	
-	private void createRightMainPanel() {
-		mainPanelRight = new JPanel(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.insets = new Insets(5, 0, 5, 0);
-		
-		//Aligns all buttons below each other
-		roads = new JButton("Straßenanbindung");
-		c.gridy = 0;
-		mainPanelRight.add(roads, c);
-		
-		water = new JButton("Wasserversorgung");
-		c.gridy = 1;
-		mainPanelRight.add(water, c);
-		
-		electricity = new JButton("Stromversorgung");
-		c.gridy = 2;
-		mainPanelRight.add(electricity, c);
-		
-		fireworks = new JButton("Feuerwerk");
-		c.gridy = 3;
-		mainPanelRight.add(fireworks, c);
-		
-		invitations = new JButton("Verteilung der Einladungen");
-		c.gridy = 4;
-		mainPanelRight.add(invitations, c);
-		
-		traffic = new JButton("Verkehrsplanung");
-		c.gridy = 5;
-		mainPanelRight.add(traffic, c);
-		
-		employees = new JButton("Kompetenzenverwaltung");
-		c.gridy = 6;
-		mainPanelRight.add(employees, c);
-		
-		//The size of the buttons
-		int buttonWidth = frame.getWidth()/2-50; //450
-		roads.setPreferredSize(new Dimension(buttonWidth, 50));
-		water.setPreferredSize(new Dimension(buttonWidth, 50));
-		electricity.setPreferredSize(new Dimension(buttonWidth, 50));
-		fireworks.setPreferredSize(new Dimension(buttonWidth, 50));
-		invitations.setPreferredSize(new Dimension(buttonWidth, 50));
-		traffic.setPreferredSize(new Dimension(buttonWidth, 50));
-		employees.setPreferredSize(new Dimension(buttonWidth, 50));
-		
-		mainPanel.add(mainPanelRight);
 	}
 	
 	//Sets the width for all columns in a JTable
