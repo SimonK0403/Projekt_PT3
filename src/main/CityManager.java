@@ -19,7 +19,6 @@ public class CityManager {
 	public Object[][] fireworksData;
 	public Object[][] invitationsData;
 	public Object[][] trafficData;
-	private JFileChooser fc = new JFileChooser();
 	
 	public void run() {
 		screen = new Screen();
@@ -27,7 +26,7 @@ public class CityManager {
 	}
 	
 	private void addMainMenuListeners() {
-		screen.selectFileButton.addActionListener(new FileButtonListener());
+//		screen.selectFileButton.addActionListener(new FileButtonListener());
 		screen.roads.addActionListener(new RoadsListener());
 		screen.water.addActionListener(new WaterListener());
 		screen.electricity.addActionListener(new ElectricityListener());
@@ -38,6 +37,7 @@ public class CityManager {
 	}
 	
 	private void addRoadsListeners() {
+		screen.roadReadFile.addActionListener(new RoadReadFileListener());
 		screen.roadSaveChanges.addActionListener(new RoadSaveListener());
 		screen.roadSizePlus.addActionListener(new RoadSizePlusListener());
 		screen.roadSizeMinus.addActionListener(new RoadSizeMinusListener());
@@ -45,6 +45,7 @@ public class CityManager {
 	}
 	
 	private void addWaterListeners() {
+		screen.waterReadFile.addActionListener(new WaterReadFileListener());
 		screen.waterSaveChanges.addActionListener(new WaterSaveListener());
 		screen.waterSizePlus.addActionListener(new WaterSizePlusListener());
 		screen.waterSizeMinus.addActionListener(new WaterSizeMinusListener());
@@ -52,6 +53,7 @@ public class CityManager {
 	}
 	
 	private void addElecListeners() {
+		screen.elecReadFile.addActionListener(new ElecReadFileListener());
 		screen.elecSaveChanges.addActionListener(new ElecSaveListener());
 		screen.elecSizePlus.addActionListener(new ElecSizePlusListener());
 		screen.elecSizeMinus.addActionListener(new ElecSizeMinusListener());
@@ -59,6 +61,7 @@ public class CityManager {
 	}
 	
 	private void addFireworksListeners() {
+		screen.fireworksReadFile.addActionListener(new FireworksReadFileListener());
 		screen.fireworksSaveChanges.addActionListener(new FireworksSaveListener());
 		screen.fireworksSizePlus.addActionListener(new FireworksSizePlusListener());
 		screen.fireworksSizeMinus.addActionListener(new FireworksSizeMinusListener());
@@ -66,6 +69,7 @@ public class CityManager {
 	}
 	
 	private void addInvitationsListeners() {
+		screen.invitationsReadFile.addActionListener(new InvitationsReadFileListener());
 		screen.invitationsSaveChanges.addActionListener(new InvitationsSaveListener());
 		screen.invitationsSizePlus.addActionListener(new InvitationsSizePlusListener());
 		screen.invitationsSizeMinus.addActionListener(new InvitationsSizeMinusListener());
@@ -73,6 +77,7 @@ public class CityManager {
 	}
 	
 	private void addTrafficListeners() {
+		screen.trafficReadFile.addActionListener(new TrafficReadFileListener());
 		screen.trafficSaveChanges.addActionListener(new TrafficSaveListener());
 		screen.trafficSizePlus.addActionListener(new TrafficSizePlusListener());
 		screen.trafficSizeMinus.addActionListener(new TrafficSizeMinusListener());
@@ -125,13 +130,19 @@ public class CityManager {
 		screen.setColumnSize(table, 30);
 	}
 	
+	private void setTableSize(JTable table, int size) {
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		model.setRowCount(size);
+		model.setColumnCount(size);
+		screen.setColumnSize(table, 30);
+	}
+	
 	//May throw ArrayIndexOutOfBoundsException if data-matrix is too small
 	/**
 	 * Inserts data from a matrix into the table
 	 * @param table The table to be filled
 	 * @param data A two-dimensional array with the data
 	 */
-	@SuppressWarnings("unused")
 	private void fillTable(JTable table, Object[][] data) {
 		TableModel tm = table.getModel();
 		int numRows = data.length;
@@ -161,15 +172,6 @@ public class CityManager {
 	
 	
 	//MainMenu listeners
-	private class FileButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			fc.showOpenDialog(screen.frame);
-			if(fc.getSelectedFile() != null) {
-				screen.selectedFileName = fc.getSelectedFile().getName();
-				screen.fileNameLabel.setText("Datei: " + screen.selectedFileName);
-			}
-		}
-	}
 	private class RoadsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			screen.createRoadScreen();
@@ -228,6 +230,17 @@ public class CityManager {
 	}
 	
 	//Handlers for the Roads screen
+	private class RoadReadFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fc = new JFileChooser();
+			fc.showOpenDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.roadTable, matrix.length);
+				fillTable(screen.roadTable, matrix);
+			}
+		}
+	}
 	private class RoadSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			roadData = readTable(screen.roadTable);
@@ -251,6 +264,17 @@ public class CityManager {
 	}
 	
 	// Handlers for the Water screen
+	private class WaterReadFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fc = new JFileChooser();
+			fc.showOpenDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.waterTable, matrix.length);
+				fillTable(screen.waterTable, matrix);
+			}
+		}
+	}
 	private class WaterSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			roadData = readTable(screen.waterTable);
@@ -274,6 +298,17 @@ public class CityManager {
 	}
 	
 	//Handlers for the electricity screen
+	private class ElecReadFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fc = new JFileChooser();
+			fc.showOpenDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.elecTable, matrix.length);
+				fillTable(screen.elecTable, matrix);
+			}
+		}
+	}
 	private class ElecSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			elecData = readTable(screen.elecTable);
@@ -297,6 +332,17 @@ public class CityManager {
 	}
 	
 	//Handlers for the fireworks screen
+	private class FireworksReadFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fc = new JFileChooser();
+			fc.showOpenDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.fireworksTable, matrix.length);
+				fillTable(screen.fireworksTable, matrix);
+			}
+		}
+	}
 	private class FireworksSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			elecData = readTable(screen.fireworksTable);
@@ -320,6 +366,17 @@ public class CityManager {
 	}
 	
 	//Handlers for the invitations screen
+	private class InvitationsReadFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fc = new JFileChooser();
+			fc.showOpenDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.invitationsTable, matrix.length);
+				fillTable(screen.invitationsTable, matrix);
+			}
+		}
+	}
 	private class InvitationsSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			invitationsData = readTable(screen.invitationsTable);
@@ -343,6 +400,17 @@ public class CityManager {
 	}
 	
 	//Handlers for the traffic screen
+	private class TrafficReadFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fc = new JFileChooser();
+			fc.showOpenDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.trafficTable, matrix.length);
+				fillTable(screen.trafficTable, matrix);
+			}
+		}
+	}
 	private class TrafficSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			trafficData = readTable(screen.trafficTable);
