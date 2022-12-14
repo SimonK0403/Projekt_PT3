@@ -36,7 +36,7 @@ public class Algorithms {
 	}
 	
 	/**
-	 * Returns a minimal spanning tree (MST)
+	 * Returns a minimal spanning tree (MST).
 	 * @param matrix The adjacency matrix for the graph
 	 * @return An adjacency matrix of the MST graph
 	 */
@@ -82,31 +82,50 @@ public class Algorithms {
 		return mst;
 	}
 	
-	public static int[] dijkstra(int[][] matrix){
+	/**
+	 * Calculates the minimum distance from the starting position to every other vertice.
+	 * 
+	 * @param matrix The adjacency matrix for the graph
+	 * @param startPosition The vertice from which to calculate distances
+	 * @return An array containing all distances
+	 */
+	public static int[] dijkstra(Object[][] matrix, int startPosition){
 		boolean[] wasVisited = new boolean[matrix.length];
-		wasVisited[0] = true;
+		wasVisited[startPosition] = true;
 		
 		int[] distances = new int[matrix.length];
 		for(int i = 0; i < distances.length; i++) { //Initializes all distance values with infinite/MAX_INT
-			distances[i] = (int) (0.5*Integer.MAX_VALUE);
+			distances[i] = (int) (0.9*Integer.MAX_VALUE);
 		}
-		distances[0] = 0; //Start node gets distance 0
+		distances[startPosition] = 0; //Start node gets distance 0
 		
-//		while(!allConnected(wasVisited)) {
-			
-			for (int i = 0; i < matrix.length; i++) {
+		for(int x = 0; x < matrix.length; x++) { //Checks as many times as there are vertices in the graph
+			for (int i = 0; i < matrix.length; i++) { //Iterates through each row
 				int ownDistance = distances[i];
-				for (int j = 0; j < matrix[i].length; j++) {
-					if ((matrix[i][j] != 0) && ((ownDistance + matrix[i][j]) < distances[j])) {
-						System.out.println(matrix[i][j]);
-						distances[j] = ownDistance + matrix[i][j];
+				for (int j = 0; j < matrix[i].length; j++) { //Checks the values in the row
+					//If an edge exists and the current distance + distance to the new node is smaller than 
+					//the saved distance for the vertice, the distance is updated
+					if (((int)matrix[i][j] != 0) && ((ownDistance + (int)matrix[i][j]) < distances[j])) { 
+						distances[j] = ownDistance + (int)matrix[i][j]; 
+						wasVisited[i] = true;
+						wasVisited[j] = true;
 					}
 				}
 			}
-			
-//		}
-		
+		}
+		System.out.println(Arrays.toString(wasVisited));
 		return distances;
+	}
+	
+	/**
+	 * Calculates the minimum distance from the starting position to every other vertice. <br>
+	 * Assumes the starting position to be 0.
+	 * 
+	 * @param matrix The adjacency matrix for the graph
+	 * @return An array containing all distances
+	 */
+	public static int[] dijkstra(Object[][] matrix) {
+		return dijkstra(matrix, 0);
 	}
 	
 }

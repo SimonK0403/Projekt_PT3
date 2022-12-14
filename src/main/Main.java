@@ -22,7 +22,7 @@ public class Main {
 				{ 0,  4, 14,  0,  0, 10,  0,  2,  0}
 		};
 		
-		int[][] dijkstraGraph = {
+		Object[][] dijkstraGraph = {
 //				  a,  b,  c,  d,  e,  f,  g,  h,  i
 				{ 0, 10,  0,  0,  0,  0,  2,  0,  0},
 				{ 0,  0,  0,  0,  0,  0,  0,  0,  4},
@@ -33,6 +33,16 @@ public class Main {
 				{ 0,  0,  0,  0,  5,  0,  0,  1,  0},
 				{ 0,  0,  0,  0,  0,  0,  0,  0, 12},
 				{ 0,  0,  0,  0,  0,  1,  0,  0,  0}
+		};
+		
+		Object[][] vorlDijkstraGraph = {
+//				  a,  b,  c,  d,  e,  f
+				{ 0,  1,  0,  1,  0,  0},
+				{ 0,  0,  7,  6,  0,  3},
+				{ 0,  0,  0,  2,  0,  9},
+				{ 1,  0,  3,  0,  0,  0},
+				{ 2,  0,  0,  0,  9,  0},
+				{ 0,  0,  0,  0,  0,  0},
 		};
 		
 //		Algorithms.printMatrix(Algorithms.prim(primGraph));
