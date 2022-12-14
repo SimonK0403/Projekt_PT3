@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Algorithms {
 	
-	//Prints a two-dimensional array to the console
+	//Prints a two-dimensional array to the console, used for testing
 	public static void printMatrix(Object[][] matrix) {
 		for(int i = 0; i < matrix.length; i++) {
 			System.out.println(Arrays.toString(matrix[i]));
@@ -80,6 +80,33 @@ public class Algorithms {
 		}
 		
 		return mst;
+	}
+	
+	public static int[] dijkstra(int[][] matrix){
+		boolean[] wasVisited = new boolean[matrix.length];
+		wasVisited[0] = true;
+		
+		int[] distances = new int[matrix.length];
+		for(int i = 0; i < distances.length; i++) { //Initializes all distance values with infinite/MAX_INT
+			distances[i] = (int) (0.5*Integer.MAX_VALUE);
+		}
+		distances[0] = 0; //Start node gets distance 0
+		
+//		while(!allConnected(wasVisited)) {
+			
+			for (int i = 0; i < matrix.length; i++) {
+				int ownDistance = distances[i];
+				for (int j = 0; j < matrix[i].length; j++) {
+					if ((matrix[i][j] != 0) && ((ownDistance + matrix[i][j]) < distances[j])) {
+						System.out.println(matrix[i][j]);
+						distances[j] = ownDistance + matrix[i][j];
+					}
+				}
+			}
+			
+//		}
+		
+		return distances;
 	}
 	
 }
