@@ -36,12 +36,20 @@ public class Algorithms {
 	}
 	
 	/**
-	 * Returns a minimal spanning tree (MST).
+	 * Returns a minimal spanning tree (MST).<br>
+	 * Works only with non-directional graphs.
+	 * 
 	 * @param matrix The adjacency matrix for the graph
+	 * @param maxDegree The maximum degree the vertices should have
 	 * @return An adjacency matrix of the MST graph
 	 */
-	public static Object[][] prim(Object[][] matrix) {
+	@SuppressWarnings("unused")
+	public static Object[][] prim(Object[][] matrix, int maxDegree) {
 		Object[][] mst = new Object[matrix.length][matrix.length]; //The MST as a matrix which will be returned
+		int[] degree = new int[matrix.length];
+		for(int i : degree) {
+			i = 0;
+		}
 		
 		boolean[] wasVisited = new boolean[matrix.length]; //Boolean array to keep track of which nodes have been visited
 		wasVisited[0] = true;
@@ -53,7 +61,7 @@ public class Algorithms {
 			for(int i = 0; i < matrix.length; i++) {
 				for(int j = 0; j < matrix[i].length; j++) {
 					if(((int)matrix[i][j] < minDistance) && ((int)matrix[i][j] != 0)) {
-						if(isValidEdge(i, j, wasVisited)) {
+						if((degree[i] < maxDegree) && (degree[j] < maxDegree) && isValidEdge(i, j, wasVisited)) {
 							minDistance = (int)matrix[i][j];
 							a = i;
 							b = j;
@@ -67,6 +75,8 @@ public class Algorithms {
 				wasVisited[a] = true;
 				wasVisited[b] = true;
 				mst[a][b] = minDistance;
+				degree[a]++;
+				degree[b]++;
 			}
 			
 		}
@@ -79,9 +89,23 @@ public class Algorithms {
 			}
 		}
 		
+		System.out.println(Arrays.toString(degree));
+		System.out.println();
+		
 		return mst;
 	}
 	
+	/**
+	 * Returns a minimal spanning tree (MST).<br>
+	 * This version also works with directional graphs.
+	 * 
+	 * @param matrix The adjacency matrix for the graph
+	 * @return An adjacency matrix of the MST graph
+	 */
+	public static Object[][] prim(Object[][] matrix) {
+		return prim(matrix, Integer.MAX_VALUE);
+	}
+
 	/**
 	 * Calculates the minimum distance from the starting position to every other vertice.
 	 * 
