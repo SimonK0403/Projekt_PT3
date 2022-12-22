@@ -17,6 +17,8 @@ public class Screen {
 	public JButton back = new JButton("<< Zurück");
 	public String selectedFileName = "";
 	private Dimension standardOpButtonSize = new Dimension(100, 30);
+	//For the result pop-up-frame
+	public JFrame resultFrame;
 	//For the main screen
 	public JButton roads;
 	public JButton water;
@@ -536,6 +538,13 @@ public class Screen {
 		placeBackButton(mainPanel);
 		frame.setContentPane(mainPanel);
 		mainPanel.repaint();
+	}
+	
+	public void createResultFrame(String title) {
+		resultFrame = new JFrame(title);
+		resultFrame.setSize(400, 400);
+		resultFrame.setLocationRelativeTo(frame);
+		resultFrame.setVisible(true);
 	}
 	
 	//Places a Button to the main Menu on the specified JPanel that has a BorderLayout

@@ -41,6 +41,7 @@ public class CityManager {
 		screen.roadSaveChanges.addActionListener(new RoadSaveListener());
 		screen.roadSizePlus.addActionListener(new RoadSizePlusListener());
 		screen.roadSizeMinus.addActionListener(new RoadSizeMinusListener());
+		screen.calculateRoads.addActionListener(new CalculateRoadsListener());
 		screen.deleteRoadTable.addActionListener(new DeleteRoadTableListener());
 	}
 	
@@ -255,6 +256,11 @@ public class CityManager {
 	private class RoadSizeMinusListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			changeTableSize(screen.roadTable, '-');
+		}
+	}
+	private class CalculateRoadsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createResultFrame("Straﬂennetz");
 		}
 	}
 	private class DeleteRoadTableListener implements ActionListener {
