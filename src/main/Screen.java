@@ -19,6 +19,7 @@ public class Screen {
 	private Dimension standardOpButtonSize = new Dimension(100, 30);
 	//For the result pop-up-frame
 	public JFrame resultFrame;
+	public JPanel resultPanel;
 	//For the main screen
 	public JButton roads;
 	public JButton water;
@@ -540,11 +541,41 @@ public class Screen {
 		mainPanel.repaint();
 	}
 	
-	public void createResultFrame(String title) {
+	/**
+	 * Creates a new JFrame within the main frame and displays a matrix
+	 * @param title The title of the new JFrame
+	 * @param matrix The matrix to be displayed
+	 */
+	public void createResultFrame(String title, Object[][] matrix) {
 		resultFrame = new JFrame(title);
-		resultFrame.setSize(400, 400);
+		resultPanel = new JPanel(new GridBagLayout());
+		resultFrame.setSize(562, 562);
 		resultFrame.setLocationRelativeTo(frame);
 		resultFrame.setVisible(true);
+		resultFrame.setContentPane(resultPanel);
+		
+		//The letters at the side and top of the matrix
+		String[] letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+		
+		String matrixAsString = "<html><pre>  "; //Surrounds the String with html tags to enable line breaks in the JLabel; pre-tag to show spaces
+		
+		for(int x = 0; x < matrix.length; x++) { //Adds the top headline of letters
+			matrixAsString = matrixAsString + letters[x] + " ";
+		}
+		
+		for(int i = 0; i < matrix.length; i++) {
+			String line = letters[i]; //Sets the letter for the row
+			for(int j = 0; j < matrix[i].length; j++) {
+				line = line + " " + matrix[i][j]; //Constructs each line with the contents of the matrix
+			}
+			matrixAsString = matrixAsString + "<br>" + line;
+		}
+		matrixAsString = matrixAsString + "</pre></html>";
+		
+		GridBagConstraints c = new GridBagConstraints();
+		JLabel matrixLabel = new JLabel(matrixAsString);
+		matrixLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+		resultPanel.add(matrixLabel, c);
 	}
 	
 	//Places a Button to the main Menu on the specified JPanel that has a BorderLayout
