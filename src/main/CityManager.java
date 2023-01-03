@@ -13,7 +13,7 @@ import javax.swing.table.*;
 public class CityManager {
 	
 	private Screen screen;
-	public Object[][] roadData = {
+	public Object[][] roadData = { //Test values
 			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
 			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
 			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
@@ -26,7 +26,18 @@ public class CityManager {
 			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	};
 	public Object[][] waterData;
-	public Object[][] elecData;
+	public Object[][] elecData = { //Test values
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 91},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 62, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 36, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 14, 2, 3, 40, 5, 6, 7, 98, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	};
 	public Object[][] fireworksData;
 	public Object[][] invitationsData;
 	public Object[][] trafficData;
@@ -61,6 +72,7 @@ public class CityManager {
 		screen.waterSaveChanges.addActionListener(new WaterSaveListener());
 		screen.waterSizePlus.addActionListener(new WaterSizePlusListener());
 		screen.waterSizeMinus.addActionListener(new WaterSizeMinusListener());
+		screen.calculateWater.addActionListener(new CalculateWaterListener());
 		screen.deleteWaterTable.addActionListener(new DeleteWaterTableListener());
 	}
 	
@@ -69,6 +81,7 @@ public class CityManager {
 		screen.elecSaveChanges.addActionListener(new ElecSaveListener());
 		screen.elecSizePlus.addActionListener(new ElecSizePlusListener());
 		screen.elecSizeMinus.addActionListener(new ElecSizeMinusListener());
+		screen.calculateElec.addActionListener(new CalculateElecListener());
 		screen.deleteElecTable.addActionListener(new DeleteElecTableListener());
 	}
 	
@@ -77,6 +90,7 @@ public class CityManager {
 		screen.fireworksSaveChanges.addActionListener(new FireworksSaveListener());
 		screen.fireworksSizePlus.addActionListener(new FireworksSizePlusListener());
 		screen.fireworksSizeMinus.addActionListener(new FireworksSizeMinusListener());
+		screen.calculateFireworks.addActionListener(new CalculateFireworksListener());
 		screen.deleteFireworksTable.addActionListener(new DeleteFireworksTableListener());
 	}
 	
@@ -85,6 +99,7 @@ public class CityManager {
 		screen.invitationsSaveChanges.addActionListener(new InvitationsSaveListener());
 		screen.invitationsSizePlus.addActionListener(new InvitationsSizePlusListener());
 		screen.invitationsSizeMinus.addActionListener(new InvitationsSizeMinusListener());
+		screen.calculateInvitations.addActionListener(new CalculateInvitationsListener());
 		screen.deleteInvitationsTable.addActionListener(new DeleteInvitationsTableListener());
 	}
 	
@@ -93,6 +108,7 @@ public class CityManager {
 		screen.trafficSaveChanges.addActionListener(new TrafficSaveListener());
 		screen.trafficSizePlus.addActionListener(new TrafficSizePlusListener());
 		screen.trafficSizeMinus.addActionListener(new TrafficSizeMinusListener());
+		screen.calculateTraffic.addActionListener(new CalculateTrafficListener());
 		screen.deleteTrafficTable.addActionListener(new DeleteTrafficTableListener());
 	}
 	
@@ -142,6 +158,11 @@ public class CityManager {
 		screen.setColumnSize(table, 30);
 	}
 	
+	/**
+	 * Sets the size of the JTable to the specified size
+	 * @param table The JTable to be changed
+	 * @param size The new size of the table
+	 */
 	private void setTableSize(JTable table, int size) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setRowCount(size);
@@ -271,7 +292,7 @@ public class CityManager {
 	}
 	private class CalculateRoadsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			screen.createResultFrame("Straﬂennetz", roadData);
+			screen.createStandardResultFrame("Straﬂennetz als Adjazenzmatrix", roadData);
 		}
 	}
 	private class DeleteRoadTableListener implements ActionListener {
@@ -349,7 +370,7 @@ public class CityManager {
 	}
 	private class CalculateElecListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			screen.createStandardResultFrame("Stromnetz als Adjazenzmatrix", elecData);
 		}
 	}
 	private class DeleteElecTableListener implements ActionListener {
