@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class Algorithms {
 	
+	public static int infinity = (int)(0.9*Integer.MAX_VALUE);
+	
 	//Prints a two-dimensional array to the console, used for testing
 	public static void printMatrix(Object[][] matrix) {
 		for(int i = 0; i < matrix.length; i++) {
@@ -119,7 +121,7 @@ public class Algorithms {
 		
 		int[] distances = new int[matrix.length];
 		for(int i = 0; i < distances.length; i++) { //Initializes all distance values with infinite/MAX_INT
-			distances[i] = (int) (0.9*Integer.MAX_VALUE);
+			distances[i] = infinity;
 		}
 		distances[startPosition] = 0; //Start node gets distance 0
 		
@@ -127,7 +129,7 @@ public class Algorithms {
 			for (int i = 0; i < matrix.length; i++) { //Iterates through each row
 				int ownDistance = distances[i];
 				for (int j = 0; j < matrix[i].length; j++) { //Checks the values in the row
-					//If an edge exists and the current distance + distance to the new node is smaller than 
+					//If an edge exists and the current distance + distance to the new vertice is smaller than 
 					//the saved distance for the vertice, the distance is updated
 					if (((int)matrix[i][j] != 0) && ((ownDistance + (int)matrix[i][j]) < distances[j])) { 
 						distances[j] = ownDistance + (int)matrix[i][j]; 
