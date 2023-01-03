@@ -38,7 +38,7 @@ public class CityManager {
 			{0, 14, 2, 3, 40, 5, 6, 7, 98, 9},
 			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	};
-	public Object[][] fireworksData;
+	public int[] fireworksData = {0, 9, 18, 1932735282, 7, 14, 2, 3, 13};
 	public Object[][] invitationsData;
 	public Object[][] trafficData;
 	
@@ -409,7 +409,7 @@ public class CityManager {
 	}
 	private class CalculateFireworksListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
+			screen.createFireworksResultFrame("Abfolge der Explosionen", fireworksData);
 		}
 	}
 	private class DeleteFireworksTableListener implements ActionListener {
