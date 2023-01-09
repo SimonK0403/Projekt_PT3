@@ -13,32 +13,10 @@ import javax.swing.table.*;
 public class CityManager {
 	
 	private Screen screen;
-	public Object[][] roadData = { //Test values
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	};
+	public Object[][] roadData;
 	public Object[][] waterData;
-	public Object[][] elecData = { //Test values
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 91},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 62, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 36, 7, 8, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{0, 14, 2, 3, 40, 5, 6, 7, 98, 9},
-			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-	};
-	public int[] fireworksData = {0, 9, 18, 1932735282, 7, 14, 2, 3, 13};
+	public Object[][] elecData;
+	public Object[][] fireworksData;
 	public Object[][] invitationsData;
 	public Object[][] trafficData;
 	
@@ -123,7 +101,11 @@ public class CityManager {
 		Object[][] tableData = new Object[numRows][numCols];
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numCols; j++) {
-				tableData[i][j] = Integer.parseInt(tm.getValueAt(i, j).toString()); //Cast to String and back to int so that java does not treat the object as a String
+				if(tm.getValueAt(i, j) == null) {
+					tableData[i][j] = 0;
+				} else {
+					tableData[i][j] = Integer.parseInt(tm.getValueAt(i, j).toString()); //Cast to String and back to int so that java does not treat the object as a String
+				}
 			}
 		}
 		return tableData;
@@ -291,7 +273,8 @@ public class CityManager {
 	}
 	private class CalculateRoadsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			screen.createStandardResultFrame("Straßennetz als Adjazenzmatrix", roadData);
+			roadData = readTable(screen.roadTable);
+			screen.createStandardResultFrame("Straßennetz als Adjazenzmatrix", Algorithms.prim(roadData));
 		}
 	}
 	private class DeleteRoadTableListener implements ActionListener {
@@ -369,7 +352,8 @@ public class CityManager {
 	}
 	private class CalculateElecListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			screen.createStandardResultFrame("Stromnetz als Adjazenzmatrix", elecData);
+			elecData = readTable(screen.elecTable);
+			screen.createStandardResultFrame("Stromnetz als Adjazenzmatrix", Algorithms.prim(elecData, 5));
 		}
 	}
 	private class DeleteElecTableListener implements ActionListener {
@@ -408,7 +392,8 @@ public class CityManager {
 	}
 	private class CalculateFireworksListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			screen.createFireworksResultFrame("Abfolge der Explosionen", fireworksData);
+			fireworksData = readTable(screen.fireworksTable);
+			screen.createFireworksResultFrame("Abfolge der Explosionen", Algorithms.dijkstra(fireworksData));
 		}
 	}
 	private class DeleteFireworksTableListener implements ActionListener {
