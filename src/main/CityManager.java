@@ -95,7 +95,7 @@ public class CityManager {
 		Object[][] tableData = new Object[numRows][numCols];
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numCols; j++) {
-				tableData[i][j] = tm.getValueAt(i, j);
+				tableData[i][j] = Integer.parseInt(tm.getValueAt(i, j).toString()); //Cast to String and back to int so that java does not treat the object as a String
 			}
 		}
 		return tableData;

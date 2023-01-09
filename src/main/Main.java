@@ -5,8 +5,8 @@ import java.util.Arrays;
 public class Main {
 
 	public static void main(String[] args) {
-//		CityManager cm = new CityManager();
-//		cm.run();
+		CityManager cm = new CityManager();
+		cm.run();
 		
 		//Der Graph aus der Uebung
 		Object[][] primGraph = {
@@ -60,7 +60,7 @@ public class Main {
 				{ 0,  0,  0,  0,  0,  0},
 		};
 		
-		Algorithms.printMatrix(Algorithms.prim(primLimitedGraph, 5));
+//		Algorithms.printMatrix(Algorithms.prim(primLimitedGraph, 5));
 //		System.out.println(Arrays.toString(Algorithms.dijkstra(dijkstraGraph)));
 	}
 
