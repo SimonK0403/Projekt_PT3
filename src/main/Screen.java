@@ -3,6 +3,7 @@ package main;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.util.*;
 
 /**
  * The class that provides the front-end view of the program
@@ -17,6 +18,12 @@ public class Screen {
 	public JButton back = new JButton("<< Zurück");
 	public String selectedFileName = "";
 	private Dimension standardOpButtonSize = new Dimension(100, 30);
+	//For the result pop-up-frame
+	public JFrame defaultResultFrame;
+	public JPanel defaultResultPanel;
+	public JFrame fireworksResultFrame;
+	public JPanel fireworksResultPanel;
+	private String[] letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	//For the main screen
 	public JButton roads;
 	public JButton water;
@@ -536,6 +543,80 @@ public class Screen {
 		placeBackButton(mainPanel);
 		frame.setContentPane(mainPanel);
 		mainPanel.repaint();
+	}
+	
+	/**
+	 * Creates a new JFrame within the main frame and displays a matrix
+	 * @param title The title of the new JFrame
+	 * @param matrix The matrix to be displayed
+	 */
+	public void createStandardResultFrame(String title, Object[][] matrix) {
+		defaultResultFrame = new JFrame(title);
+		defaultResultPanel = new JPanel(new GridBagLayout());
+		defaultResultFrame.setSize(562, 562);
+		defaultResultFrame.setLocationRelativeTo(frame);
+		defaultResultFrame.setVisible(true);
+		defaultResultFrame.setContentPane(defaultResultPanel);
+		
+		String matrixAsString = "";
+		
+		for(int x = 0; x < matrix.length; x++) { //Adds the top headline of letters
+			matrixAsString = matrixAsString + letters[x] + " ";
+		}
+		
+		for(int i = 0; i < matrix.length; i++) {
+			String line = letters[i]; //Sets the letter for the row
+			for(int j = 0; j < matrix[i].length; j++) {
+				line = line + " " + matrix[i][j]; //Constructs each line with the contents of the matrix
+			}
+			matrixAsString = matrixAsString + "<br>" + line;
+		}
+		matrixAsString = "<html><pre>  " + matrixAsString + "</pre></html>"; //Surrounds the String with html tags to enable line breaks in the JLabel; pre-tag to show spaces
+		
+		GridBagConstraints c = new GridBagConstraints();
+		JLabel matrixLabel = new JLabel(matrixAsString);
+		matrixLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+		defaultResultPanel.add(matrixLabel, c);
+	}
+	
+	public void createFireworksResultFrame(String title, int[] distanceArray) {
+		fireworksResultFrame = new JFrame(title);
+		fireworksResultPanel = new JPanel(new GridBagLayout()); //GridBag for centered Components
+		fireworksResultFrame.setSize(562, 562);
+		fireworksResultFrame.setLocationRelativeTo(frame);
+		fireworksResultFrame.setVisible(true);
+		fireworksResultFrame.setContentPane(fireworksResultPanel);
+		
+		//Creates a String with the names and value of the vertices ordered by the value
+		int infinity = (int)(0.9*Integer.MAX_VALUE); //TODO: take infinity from algorithms class
+		String labelText = "";
+
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+		for (int i = 0; i < distanceArray.length; i++) {
+			map.put(letters[i], distanceArray[i]);
+		}
+		while (!map.isEmpty()) {
+			String minKey = "A";
+			int minValue = Integer.MAX_VALUE;
+			for (Map.Entry<String, Integer> pair : map.entrySet()) { // Iterates through the map and looks for the smallest value in each iteration
+				if (pair.getValue() < minValue) {
+					minKey = pair.getKey();
+					minValue = pair.getValue();
+				}
+			}
+			map.remove(minKey);
+			if (minValue != infinity) {
+				labelText += minKey + " " + minValue + "<br>";
+			}
+		}
+		labelText = "<html>" + labelText + "</html>"; //Wraps the text with html tags to allow linebreaks
+		
+		//Adds a JLabel with the labelText to the panel
+		GridBagConstraints c = new GridBagConstraints();
+		JLabel fireworksLabel = new JLabel(labelText);
+		fireworksLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+		fireworksResultPanel.add(fireworksLabel, c);
 	}
 	
 	//Places a Button to the main Menu on the specified JPanel that has a BorderLayout

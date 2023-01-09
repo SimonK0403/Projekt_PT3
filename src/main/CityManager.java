@@ -13,10 +13,32 @@ import javax.swing.table.*;
 public class CityManager {
 	
 	private Screen screen;
-	public Object[][] roadData;
+	public Object[][] roadData = { //Test values
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	};
 	public Object[][] waterData;
-	public Object[][] elecData;
-	public Object[][] fireworksData;
+	public Object[][] elecData = { //Test values
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 91},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 62, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 36, 7, 8, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{0, 14, 2, 3, 40, 5, 6, 7, 98, 9},
+			{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	};
+	public int[] fireworksData = {0, 9, 18, 1932735282, 7, 14, 2, 3, 13};
 	public Object[][] invitationsData;
 	public Object[][] trafficData;
 	
@@ -40,6 +62,7 @@ public class CityManager {
 		screen.roadSaveChanges.addActionListener(new RoadSaveListener());
 		screen.roadSizePlus.addActionListener(new RoadSizePlusListener());
 		screen.roadSizeMinus.addActionListener(new RoadSizeMinusListener());
+		screen.calculateRoads.addActionListener(new CalculateRoadsListener());
 		screen.deleteRoadTable.addActionListener(new DeleteRoadTableListener());
 	}
 	
@@ -48,6 +71,7 @@ public class CityManager {
 		screen.waterSaveChanges.addActionListener(new WaterSaveListener());
 		screen.waterSizePlus.addActionListener(new WaterSizePlusListener());
 		screen.waterSizeMinus.addActionListener(new WaterSizeMinusListener());
+		screen.calculateWater.addActionListener(new CalculateWaterListener());
 		screen.deleteWaterTable.addActionListener(new DeleteWaterTableListener());
 	}
 	
@@ -56,6 +80,7 @@ public class CityManager {
 		screen.elecSaveChanges.addActionListener(new ElecSaveListener());
 		screen.elecSizePlus.addActionListener(new ElecSizePlusListener());
 		screen.elecSizeMinus.addActionListener(new ElecSizeMinusListener());
+		screen.calculateElec.addActionListener(new CalculateElecListener());
 		screen.deleteElecTable.addActionListener(new DeleteElecTableListener());
 	}
 	
@@ -64,6 +89,7 @@ public class CityManager {
 		screen.fireworksSaveChanges.addActionListener(new FireworksSaveListener());
 		screen.fireworksSizePlus.addActionListener(new FireworksSizePlusListener());
 		screen.fireworksSizeMinus.addActionListener(new FireworksSizeMinusListener());
+		screen.calculateFireworks.addActionListener(new CalculateFireworksListener());
 		screen.deleteFireworksTable.addActionListener(new DeleteFireworksTableListener());
 	}
 	
@@ -72,6 +98,7 @@ public class CityManager {
 		screen.invitationsSaveChanges.addActionListener(new InvitationsSaveListener());
 		screen.invitationsSizePlus.addActionListener(new InvitationsSizePlusListener());
 		screen.invitationsSizeMinus.addActionListener(new InvitationsSizeMinusListener());
+		screen.calculateInvitations.addActionListener(new CalculateInvitationsListener());
 		screen.deleteInvitationsTable.addActionListener(new DeleteInvitationsTableListener());
 	}
 	
@@ -80,6 +107,7 @@ public class CityManager {
 		screen.trafficSaveChanges.addActionListener(new TrafficSaveListener());
 		screen.trafficSizePlus.addActionListener(new TrafficSizePlusListener());
 		screen.trafficSizeMinus.addActionListener(new TrafficSizeMinusListener());
+		screen.calculateTraffic.addActionListener(new CalculateTrafficListener());
 		screen.deleteTrafficTable.addActionListener(new DeleteTrafficTableListener());
 	}
 	
@@ -119,16 +147,21 @@ public class CityManager {
 	 */
 	private void changeTableSize(JTable table, char op) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		if(op == '+') {
+		if((op == '+') && (model.getRowCount() < 26)) {
 			model.setRowCount(model.getRowCount() + 1);
 			model.setColumnCount(model.getColumnCount() + 1);
-		} else if(op == '-') {
+		} else if((op == '-') && (model.getRowCount() > 2)) {
 			model.setRowCount(model.getRowCount() - 1);
 			model.setColumnCount(model.getColumnCount() - 1);
 		}
 		screen.setColumnSize(table, 30);
 	}
 	
+	/**
+	 * Sets the size of the JTable to the specified size
+	 * @param table The JTable to be changed
+	 * @param size The new size of the table
+	 */
 	private void setTableSize(JTable table, int size) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setRowCount(size);
@@ -256,6 +289,11 @@ public class CityManager {
 			changeTableSize(screen.roadTable, '-');
 		}
 	}
+	private class CalculateRoadsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createStandardResultFrame("Straﬂennetz als Adjazenzmatrix", roadData);
+		}
+	}
 	private class DeleteRoadTableListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			deleteTableData(screen.roadTable);
@@ -288,6 +326,11 @@ public class CityManager {
 	private class WaterSizeMinusListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			changeTableSize(screen.waterTable, '-');
+		}
+	}
+	private class CalculateWaterListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	}
 	private class DeleteWaterTableListener implements ActionListener {
@@ -324,6 +367,11 @@ public class CityManager {
 			changeTableSize(screen.elecTable, '-');
 		}
 	}
+	private class CalculateElecListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createStandardResultFrame("Stromnetz als Adjazenzmatrix", elecData);
+		}
+	}
 	private class DeleteElecTableListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			deleteTableData(screen.elecTable);
@@ -356,6 +404,11 @@ public class CityManager {
 	private class FireworksSizeMinusListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			changeTableSize(screen.fireworksTable, '-');
+		}
+	}
+	private class CalculateFireworksListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			screen.createFireworksResultFrame("Abfolge der Explosionen", fireworksData);
 		}
 	}
 	private class DeleteFireworksTableListener implements ActionListener {
@@ -392,6 +445,11 @@ public class CityManager {
 			changeTableSize(screen.invitationsTable, '-');
 		}
 	}
+	private class CalculateInvitationsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
 	private class DeleteInvitationsTableListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			deleteTableData(screen.invitationsTable);
@@ -424,6 +482,11 @@ public class CityManager {
 	private class TrafficSizeMinusListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			changeTableSize(screen.trafficTable, '-');
+		}
+	}
+	private class CalculateTrafficListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	}
 	private class DeleteTrafficTableListener implements ActionListener {
