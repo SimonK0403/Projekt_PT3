@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Algorithms {
 	
-	public static int infinity = (int)(0.9*Integer.MAX_VALUE);
+	private static int infinity = (int)(0.9*Integer.MAX_VALUE);
 	
 	//Prints a two-dimensional array to the console, used for testing
 	public static void printMatrix(Object[][] matrix) {
@@ -57,7 +57,7 @@ public class Algorithms {
 		wasVisited[0] = true;
 		
 		//Loops through the entire graph, looking for the shortest edge
-		while(!allConnected(wasVisited)) { //While there are unconnected nodes
+		for(int x = 0; x < matrix.length-1; x++) { //A MST has n-1 edges, so the loop is traversed n-1 times (n=number of vertices)
 			int minDistance = Integer.MAX_VALUE;
 			int a=-1, b=-1; //Saves the location of the shortest target for the current node
 			for(int i = 0; i < matrix.length; i++) {
@@ -92,6 +92,9 @@ public class Algorithms {
 		}
 		
 		System.out.println(Arrays.toString(degree));
+		if(!allConnected(wasVisited)) {
+			System.out.println("Not all vertices could be connected.");
+		}
 		System.out.println();
 		
 		return mst;
@@ -99,7 +102,7 @@ public class Algorithms {
 	
 	/**
 	 * Returns a minimal spanning tree (MST).<br>
-	 * This version also works with directional graphs.
+	 * Works only with non-directional graphs.
 	 * 
 	 * @param matrix The adjacency matrix for the graph
 	 * @return An adjacency matrix of the MST graph

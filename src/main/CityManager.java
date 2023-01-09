@@ -26,7 +26,6 @@ public class CityManager {
 	}
 	
 	private void addMainMenuListeners() {
-//		screen.selectFileButton.addActionListener(new FileButtonListener());
 		screen.roads.addActionListener(new RoadsListener());
 		screen.water.addActionListener(new WaterListener());
 		screen.electricity.addActionListener(new ElectricityListener());
@@ -114,7 +113,7 @@ public class CityManager {
 	}
 	
 	/**
-	 * Changes the table size by altering it's TableModel
+	 * Changes the table size by altering its TableModel
 	 * @param table The JTable that has to be changed
 	 * @param op Whether to increase or to decrease the size of the table; must be '+' or '-'
 	 */
