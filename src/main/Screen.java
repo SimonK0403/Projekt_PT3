@@ -14,7 +14,6 @@ public class Screen {
 	public JFrame frame;
 	public JPanel mainPanel;
 	public JButton back = new JButton("<< Zurück");
-	public String selectedFileName = "";
 	private Dimension standardOpButtonSize = new Dimension(100, 30);
 	//For the result pop-up-frame
 	public JFrame defaultResultFrame;
@@ -547,8 +546,9 @@ public class Screen {
 	 * Creates a new JFrame within the main frame and displays a matrix
 	 * @param title The title of the new JFrame
 	 * @param matrix The matrix to be displayed
+	 * @param undirected Whether or not the matrix is undirected; shows only lower triangle if true
 	 */
-	public void createStandardResultFrame(String title, Object[][] matrix) {
+	public void createStandardResultFrame(String title, Object[][] matrix, boolean undirected) {
 		defaultResultFrame = new JFrame(title);
 		defaultResultPanel = new JPanel(new GridBagLayout());
 		defaultResultFrame.setSize(562, 562);
@@ -557,6 +557,9 @@ public class Screen {
 		defaultResultFrame.setContentPane(defaultResultPanel);
 		
 		String matrixAsString = "";
+		if(undirected) {
+			matrix = FileManager.toLowerTriangle(matrix);
+		}
 		
 		for(int x = 0; x < matrix.length; x++) { //Adds the top headline of letters
 			matrixAsString = matrixAsString + letters[x] + " ";
@@ -565,7 +568,9 @@ public class Screen {
 		for(int i = 0; i < matrix.length; i++) {
 			String line = letters[i]; //Sets the letter for the row
 			for(int j = 0; j < matrix[i].length; j++) {
-				line = line + " " + matrix[i][j]; //Constructs each line with the contents of the matrix
+				if(!(matrix[i][j] == null)) { //Skips over null values
+					line = line + " " + matrix[i][j]; //Constructs each line with the contents of the matrix
+				}
 			}
 			matrixAsString = matrixAsString + "<br>" + line;
 		}
@@ -586,7 +591,7 @@ public class Screen {
 		fireworksResultFrame.setContentPane(fireworksResultPanel);
 		
 		//Creates a String with the names and value of the vertices ordered by the value
-		int infinity = (int)(0.9*Integer.MAX_VALUE); //TODO: take infinity from algorithms class
+		int infinity = (int)(0.9*Integer.MAX_VALUE);
 		String labelText = "";
 
 		HashMap<String, Integer> map = new HashMap<String, Integer>();

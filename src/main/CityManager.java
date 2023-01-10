@@ -272,7 +272,7 @@ public class CityManager {
 	private class CalculateRoadsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			roadData = readTable(screen.roadTable);
-			screen.createStandardResultFrame("Straﬂennetz als Adjazenzmatrix", Algorithms.prim(roadData));
+			screen.createStandardResultFrame("Straﬂennetz als Adjazenzmatrix", Algorithms.prim(roadData), true);
 		}
 	}
 	private class DeleteRoadTableListener implements ActionListener {
@@ -351,7 +351,7 @@ public class CityManager {
 	private class CalculateElecListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			elecData = readTable(screen.elecTable);
-			screen.createStandardResultFrame("Stromnetz als Adjazenzmatrix", Algorithms.prim(elecData, 5));
+			screen.createStandardResultFrame("Stromnetz als Adjazenzmatrix", Algorithms.prim(elecData, 5), true);
 		}
 	}
 	private class DeleteElecTableListener implements ActionListener {

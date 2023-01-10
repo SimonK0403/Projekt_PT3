@@ -31,7 +31,7 @@ public class FileManager {
 	 */
 	public static Object[][] toLowerTriangle(Object[][] matrix){
 		for(int i = 0; i < matrix.length; i++) {
-			for(int j = i; j < matrix.length; j++) {
+			for(int j = i+1; j < matrix.length; j++) {
 				matrix[j][i] = matrix[i][j];
 				matrix[i][j] = null;
 			}
@@ -41,7 +41,7 @@ public class FileManager {
 	
 	/**
 	 * Reads data from a file containing an adjacency matrix. <br>
-	 * Also works with undirectional matrices that have only the lower diagonal in the file.
+	 * Also works with undirected matrices that have only the lower diagonal in the file.
 	 * @param file The file from which the data is read
 	 * @return The result matrix as a two-dimensional Object array
 	 */
@@ -60,7 +60,7 @@ public class FileManager {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		if(matrix[0][matrix.length-1] == null) { //Checks if the graph is undirectional by checking if the upper right value is null
+		if(matrix[0][matrix.length-1] == null) { //Checks if the graph is undirected by checking if the upper right value is null
 			for(int i = 0; i < matrix.length; i++) { //Rows
 				for(int j = 0; j < matrix[i].length; j++) { //Columns
 					if(matrix[i][j] == null) { //If the value is null, it gets replaced by the value on the other side of the diagonal
@@ -72,7 +72,7 @@ public class FileManager {
 		return matrix;
 	}
 	
-	public static void printResult(Object[][] matrix, File file) {
+	public static void printResultMatrix(Object[][] matrix, File file, boolean undirected) {
 		FileWriter fw;
 		try {
 			fw = new FileWriter(file.getPath(), true);
@@ -83,7 +83,7 @@ public class FileManager {
 		}
 	}
 	
-	//Method used for testing readFile, can be deleted later
+	//Method used for testing readFile
 	public static void printMatrix(Object[][] matrix) {
 		for(int i = 0; i < matrix.length; i++) {
 			for(int j = 0; j < matrix[i].length; j++) {
