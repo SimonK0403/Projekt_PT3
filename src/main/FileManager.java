@@ -27,6 +27,21 @@ public class FileManager {
 	}
 	
 	/**
+	 * Takes an upper triangular matrix and turns it into a lower triangular matrix.
+	 * @param matrix The upper triangular matrix.
+	 * @return The matrix as a lower triangular matrix, filling the upper triangle with <code>null</code> values.
+	 */
+	public static Object[][] toLowerTriagle(Object[][] matrix){
+		for(int i = 0; i < matrix.length; i++) {
+			for(int j = i; j < matrix.length; j++) {
+				matrix[j][i] = matrix[i][j];
+				matrix[i][j] = null;
+			}
+		}
+		return matrix;
+	}
+	
+	/**
 	 * Reads data from a file containing an adjacency matrix. <br>
 	 * Also works with undirectional matrices that have only the lower diagonal in the file.
 	 * @param file The file from which the data is read
