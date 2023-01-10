@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 /**
  * A class that contains static methods for handling files
- * @author Simon
- *
  */
 public class FileManager {
 	
@@ -31,7 +29,7 @@ public class FileManager {
 	 * @param matrix The upper triangular matrix.
 	 * @return The matrix as a lower triangular matrix, filling the upper triangle with <code>null</code> values.
 	 */
-	public static Object[][] toLowerTriagle(Object[][] matrix){
+	public static Object[][] toLowerTriangle(Object[][] matrix){
 		for(int i = 0; i < matrix.length; i++) {
 			for(int j = i; j < matrix.length; j++) {
 				matrix[j][i] = matrix[i][j];

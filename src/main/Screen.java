@@ -7,8 +7,6 @@ import java.util.*;
 
 /**
  * The class that provides the front-end view of the program
- * @author Simon
- *
  */
 public class Screen {
 	

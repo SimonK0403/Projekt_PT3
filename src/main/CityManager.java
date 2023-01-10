@@ -7,8 +7,6 @@ import javax.swing.table.*;
 
 /**
  * The main class which provides most of the back-end functionality to the program
- * @author Simon
- *
  */
 public class CityManager {
 	
@@ -479,6 +477,4 @@ public class CityManager {
 			deleteTableData(screen.trafficTable);
 		}
 	}
-	
-	
 }
