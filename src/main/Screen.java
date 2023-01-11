@@ -97,6 +97,17 @@ public class Screen {
 	public JButton trafficSizeMinus;
 	public JButton calculateTraffic;
 	public JButton deleteTrafficTable;
+	//For employees screen
+	private JPanel employeesPanel;
+	private JPanel employeesOpPanel;
+	public DefaultTableModel employeesTableModel = new DefaultTableModel(10, 10);
+	public JTable employeesTable;
+	public JButton employeesReadFile;
+	public JButton employeesSaveChanges;
+	public JButton employeesSizePlus;
+	public JButton employeesSizeMinus;
+	public JButton calculateEmployees;
+	public JButton deleteEmployeesTable;
 	
 	
 	
@@ -147,7 +158,7 @@ public class Screen {
 		c.gridy = 5;
 		mainPanel.add(traffic, c);
 		
-		employees = new JButton("Kompetenzenverwaltung");
+		employees = new JButton("Personalverwaltung");
 		c.gridy = 6;
 		mainPanel.add(employees, c);
 		
@@ -538,6 +549,58 @@ public class Screen {
 		mainPanel.removeAll();
 		mainPanel.setLayout(new BorderLayout());
 		placeBackButton(mainPanel);
+		
+		employeesPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(10, 10, 10, 10);
+		
+		//For the traffic panel
+		employeesTable = new JTable(employeesTableModel);
+		c.gridx = 0;
+		setColumnSize(employeesTable, 30);
+		employeesPanel.add(employeesTable, c);
+		
+		employeesOpPanel = new JPanel(new GridBagLayout());
+		c.gridx = 1;
+		employeesPanel.add(employeesOpPanel, c);
+
+		//For the operations panel
+		GridBagConstraints d = new GridBagConstraints();
+		d.insets = new Insets(5, 0, 5, 0);
+		d.anchor = GridBagConstraints.WEST;
+		
+		employeesReadFile = new JButton("Einlesen");
+		d.gridy = 0;
+		employeesOpPanel.add(employeesReadFile, d);
+		
+		employeesSaveChanges = new JButton("Speichern");
+		d.gridy = 1;
+		employeesOpPanel.add(employeesSaveChanges, d);
+		
+		employeesSizePlus = new JButton("+");
+		d.gridy = 2;
+		employeesOpPanel.add(employeesSizePlus, d);
+		
+		employeesSizeMinus = new JButton("-");
+		d.gridy = 3;
+		employeesOpPanel.add(employeesSizeMinus, d);
+		
+		calculateEmployees = new JButton("Berechnen");
+		d.gridy = 4;
+		employeesOpPanel.add(calculateEmployees, d);
+		
+		deleteEmployeesTable = new JButton("Löschen");
+		d.gridy = 5;
+		employeesOpPanel.add(deleteEmployeesTable, d);
+		
+		employeesReadFile.setPreferredSize(standardOpButtonSize);
+		employeesSaveChanges.setPreferredSize(standardOpButtonSize);
+		employeesSizePlus.setPreferredSize(standardOpButtonSize);
+		employeesSizeMinus.setPreferredSize(standardOpButtonSize);
+		calculateEmployees.setPreferredSize(standardOpButtonSize);
+		deleteEmployeesTable.setPreferredSize(standardOpButtonSize);
+		
+		mainPanel.add(employeesPanel, BorderLayout.CENTER);
 		frame.setContentPane(mainPanel);
 		mainPanel.repaint();
 	}

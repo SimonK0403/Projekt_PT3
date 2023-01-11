@@ -87,6 +87,15 @@ public class CityManager {
 		screen.deleteTrafficTable.addActionListener(new DeleteTrafficTableListener());
 	}
 	
+	private void addEmployeesListeners() {
+		screen.employeesReadFile.addActionListener(new EmployeesReadFileListener());
+		screen.employeesSaveChanges.addActionListener(new EmployeesSaveListener());
+		screen.employeesSizePlus.addActionListener(new EmployeesSizePlusListener());
+		screen.employeesSizeMinus.addActionListener(new EmployeesSizeMinusListener());
+		screen.calculateEmployees.addActionListener(new CalculateEmployeesListener());
+		screen.deleteEmployeesTable.addActionListener(new DeleteEmployeesTableListener());
+	}
+	
 	/**
 	 * Returns a matrix with the content of the table
 	 * @param table The JTable to draw content from
@@ -229,6 +238,7 @@ public class CityManager {
 	private class EmployeesListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			screen.createEmployeesScreen();
+			addEmployeesListeners();
 			screen.back.addActionListener(new BackListener());
 		}
 	}
@@ -475,6 +485,45 @@ public class CityManager {
 	private class DeleteTrafficTableListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			deleteTableData(screen.trafficTable);
+		}
+	}
+	
+	//Handlers for the employees screen
+	private class EmployeesReadFileListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fc = new JFileChooser();
+			fc.showOpenDialog(screen.frame);
+			if (!(fc.getSelectedFile() == null)) {
+				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.employeesTable, matrix.length);
+				fillTable(screen.employeesTable, matrix);
+			}
+		}
+	}
+	private class EmployeesSaveListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			trafficData = readTable(screen.employeesTable);
+			printTable(screen.employeesTable);
+		}
+	}
+	private class EmployeesSizePlusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.employeesTable, '+');
+		}
+	}
+	private class EmployeesSizeMinusListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			changeTableSize(screen.employeesTable, '-');
+		}
+	}
+	private class CalculateEmployeesListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+		}
+	}
+	private class DeleteEmployeesTableListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			deleteTableData(screen.employeesTable);
 		}
 	}
 }
