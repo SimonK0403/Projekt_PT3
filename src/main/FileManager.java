@@ -8,6 +8,8 @@ import java.util.Scanner;
  */
 public class FileManager {
 	
+	private static String[] letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+	
 	//Returns the size of the matrix in the file
 	private static int size(File file) {
 		int i = 0;
@@ -37,6 +39,30 @@ public class FileManager {
 			}
 		}
 		return matrix;
+	}
+	
+	/**
+	 * Converts a matrix to a String-Array that also contains axis descriptions as letters.
+	 * @param matrix The Object matrix.
+	 * @return The matrix as String-Array.
+	 */
+	public static String[] matrixToString(Object[][] matrix) {
+		String[] matrixLines = new String[matrix.length + 1];
+		matrixLines[0] = "  ";
+		
+		for(int i = 0; i<matrix.length; i++) { //Fist line with letters only
+			matrixLines[0] += letters[i] + " ";
+		}
+		
+		for(int i = 0; i<matrix.length; i++) { //Other Lines with letter at start and then numbers
+			matrixLines[i+1] = letters[i] + " ";
+			for(int j = 0; j<matrix[i].length; j++) {
+				if(matrix[i][j] != null) {
+					matrixLines[i+1] += matrix[i][j] + " ";
+				}
+			}
+		}
+		return matrixLines;
 	}
 	
 	/**
