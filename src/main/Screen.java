@@ -609,9 +609,9 @@ public class Screen {
 	 * Creates a new JFrame within the main frame and displays a matrix
 	 * @param title The title of the new JFrame
 	 * @param matrix The matrix to be displayed
-	 * @param undirected Whether or not the matrix is undirected; shows only lower triangle if true
+	 * @param upperTriangularMatrix Whether or not the matrix is an upper triangular matrix; shows only lower triangle if true
 	 */
-	public void createStandardResultFrame(String title, Object[][] matrix, boolean undirected) {
+	public void createStandardResultFrame(String title, Object[][] matrix, boolean upperTriangularMatrix) {
 		defaultResultFrame = new JFrame(title);
 		defaultResultPanel = new JPanel(new GridBagLayout());
 		defaultResultFrame.setSize(562, 562);
@@ -620,7 +620,7 @@ public class Screen {
 		defaultResultFrame.setContentPane(defaultResultPanel);
 		
 		String matrixAsString = "";
-		if(undirected) {
+		if(upperTriangularMatrix) {
 			matrix = FileManager.toLowerTriangle(matrix);
 		}
 		

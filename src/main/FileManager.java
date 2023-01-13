@@ -98,11 +98,27 @@ public class FileManager {
 		return matrix;
 	}
 	
-	public static void printResultMatrix(Object[][] matrix, File file, boolean undirected) {
+	/**
+	 * Prints a matrix into the selected file.
+	 * @param matrix The matrix to print.
+	 * @param file The file to print the matrix to.
+	 * @param upperTriangularMatrix Whether or not the input matrix is an upper triangular matrix. If true, it is flipped down.
+	 */
+	public static void printResultMatrix(Object[][] matrix, File file, boolean upperTriangularMatrix) {
+		if(upperTriangularMatrix) {
+			matrix = toLowerTriangle(matrix);
+		}
+		String[] matrixLines = FileManager.matrixToString(matrix);
 		FileWriter fw;
 		try {
 			fw = new FileWriter(file.getPath(), true);
 			BufferedWriter writer = new BufferedWriter(fw);
+			
+			for(String s : matrixLines) {
+				writer.append(s);
+				writer.newLine();
+			}
+			
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
