@@ -130,8 +130,7 @@ public class FileManager {
 	 * @param directory The directory in which the file should be created. Example: <code>C:\\Users\\Username\\Desktop\\</code>.
 	 * @param name The name of the file. Automatically appends <code>.txt</code> as file ending.
 	 */
-	public static void createFile(String directory, String name) {
-		File file = new File(directory + name + ".txt");
+	public static void createFile(File file) {
 		try {
 			if(file.createNewFile()) {
 				System.out.println("File created successfully");

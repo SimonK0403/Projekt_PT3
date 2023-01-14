@@ -266,7 +266,17 @@ public class CityManager {
 	private class RoadSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			roadData = readTable(screen.roadTable);
-			printTable(screen.roadTable);
+			JFileChooser fc = new JFileChooser();
+			fc.showSaveDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				System.out.println(fc.getSelectedFile().getPath());
+				if(fc.getSelectedFile().exists()) {
+					FileManager.printResultMatrix(Algorithms.prim(roadData), fc.getSelectedFile(), true);
+				} else {
+					FileManager.createFile(fc.getSelectedFile());
+					FileManager.printResultMatrix(Algorithms.prim(roadData), fc.getSelectedFile(), true);
+				}
+			}
 		}
 	}
 	private class RoadSizePlusListener implements ActionListener {
@@ -345,7 +355,17 @@ public class CityManager {
 	private class ElecSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			elecData = readTable(screen.elecTable);
-			printTable(screen.elecTable);
+			JFileChooser fc = new JFileChooser();
+			fc.showSaveDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				System.out.println(fc.getSelectedFile().getPath());
+				if(fc.getSelectedFile().exists()) {
+					FileManager.printResultMatrix(Algorithms.prim(elecData, 5), fc.getSelectedFile(), true);
+				} else {
+					FileManager.createFile(fc.getSelectedFile());
+					FileManager.printResultMatrix(Algorithms.prim(elecData, 5), fc.getSelectedFile(), true);
+				}
+			}
 		}
 	}
 	private class ElecSizePlusListener implements ActionListener {
