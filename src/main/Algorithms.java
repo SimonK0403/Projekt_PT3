@@ -13,18 +13,20 @@ public class Algorithms {
 		}
 	}
 	
-	//Returns true if the edge is valid.
-	//An edge is valid if both vertices are not the same
-	//and if only one of them has been visited yet.
-	private static boolean isValidEdge(int u, int v, boolean[] wasVisited) {
-		if(u == v) {
-			return false;
-		} else if (!wasVisited[u] && !wasVisited[v]) {
-			return false;
-		} else if (wasVisited[u] && wasVisited[v]) {
+	/**
+	 * Returns true if the edge is valid for prim.<br>
+	 * An edge is valid if one of the vertices has been visited and the other one has not.
+	 * @param a Vertice a
+	 * @param b Vertice b
+	 * @param wasVisited A boolean array that keeps track of which vertices have yet been visited.
+	 * @return <code>true</code> if the edge is valid, <code>false</code> if not.
+	 */
+	private static boolean isValidEdge(int a, int b, boolean[] wasVisited) {
+		if(wasVisited[a] != wasVisited[b]) {
+			return true;
+		} else {
 			return false;
 		}
-		return true;
 	}
 	
 	//Checks if all vertices in a graph have been connected to the MST
