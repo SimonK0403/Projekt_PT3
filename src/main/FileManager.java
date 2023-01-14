@@ -125,6 +125,24 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * Creates a <code>.txt</code> file in the specified directory.
+	 * @param directory The directory in which the file should be created. Example: <code>C:\\Users\\Username\\Desktop\\</code>.
+	 * @param name The name of the file. Automatically appends <code>.txt</code> as file ending.
+	 */
+	public static void createFile(String directory, String name) {
+		File file = new File(directory + name + ".txt");
+		try {
+			if(file.createNewFile()) {
+				System.out.println("File created successfully");
+			} else {
+				System.out.println("File already exists");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	//Method used for testing readFile
 	public static void printMatrix(Object[][] matrix) {
 		for(int i = 0; i < matrix.length; i++) {
