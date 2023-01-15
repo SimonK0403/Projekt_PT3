@@ -46,7 +46,7 @@ public class FileManager {
 	 * @param matrix The Object matrix.
 	 * @return The matrix as String-Array.
 	 */
-	public static String[] matrixToString(Object[][] matrix) {
+	private static String[] matrixToString(Object[][] matrix) {
 		String[] matrixLines = new String[matrix.length + 1];
 		matrixLines[0] = "  ";
 		
@@ -63,6 +63,57 @@ public class FileManager {
 			}
 		}
 		return matrixLines;
+	}
+	
+	/**
+	 * Checks if there are still values that haven't been used/taken. Used for the fireworks stuff.
+	 * @param wasVisited The array which saves which values have been taken.
+	 * @return <code>true</code> if all values have been taken, <code>false</code> if not.
+	 */
+	private static boolean allTaken(boolean[] wasVisited) {
+		for(boolean b : wasVisited) {
+			if(!b) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Returns the index of the smallest value that hasn't been used/taken already. Used for the fireworks stuff.
+	 * @param array The array that contains all the distances.
+	 * @param wasTaken The array that stores which values have been already taken/used.
+	 * @return The index of the smallest value that has not yet been taken.
+	 */
+	private static int getSmallestNumberIndex(int[] array, boolean[] wasTaken) {
+		int index = -1;
+		int minimum = Integer.MAX_VALUE;
+		for(int i=0; i < array.length; i++) {
+			if((!wasTaken[i]) && (array[i] < minimum)) {
+				index = i;
+				minimum = array[i];
+			}
+		}
+		return index;
+	}
+	
+	/**
+	 * Converts an array of integers to an array of strings where they are ordered by size and get their letter.
+	 * Used for fireworks stuff
+	 * @param array The int-Array returned by <code>Algorithms.dijkstra()</code>.
+	 * @return The string-Array.
+	 */
+	public static String[] intArrayToStringArray(int[] array) {
+		boolean[] isTaken = new boolean[array.length]; //The array that keeps track of which values of distanceArray have been put into stringArray
+		String[] stringArray = new String[array.length]; //The array in which the distance to each vertice is saved with its letter
+		
+		//Takes the smallest available value from the distanceArray and adds it into the stringArray with its letter
+		for(int i = 0; !allTaken(isTaken); i++) { //While there are values int distanceArray that haven't been put into the stringArray
+			int index = getSmallestNumberIndex(array, isTaken);
+			isTaken[index] = true;
+			stringArray[i] = letters[index] + " " + array[index];
+		}
+		return stringArray;
 	}
 	
 	/**
@@ -126,9 +177,33 @@ public class FileManager {
 	}
 	
 	/**
+	 * Converts an array of integers to Strings where the integers get their letter and are ordered by size, 
+	 * then prints the list to the specified file. Used for the fireworks stuff.
+	 * @param distanceArray The array containing the distances returned by <code>Algorithms.dijkstra()</code>.
+	 * @param file The file to print the list to.
+	 */
+	public static void printResultList(int[] distanceArray, File file) {
+		String[] listLines = intArrayToStringArray(distanceArray);
+		FileWriter fw;
+		try {
+			fw = new FileWriter(file.getPath());
+			BufferedWriter writer = new BufferedWriter(fw);
+			
+			for(String s : listLines) {
+				writer.append(s);
+				writer.newLine();
+			}
+			
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Creates a <code>.txt</code> file in the specified directory.
 	 * @param directory The directory in which the file should be created. Example: <code>C:\\Users\\Username\\Desktop\\</code>.
-	 * @param name The name of the file. Automatically appends <code>.txt</code> as file ending.
+	 * @param file The instance of <code>File</code> that is to be created on the system.
 	 */
 	public static void createFile(File file) {
 		try {

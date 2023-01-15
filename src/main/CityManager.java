@@ -404,8 +404,18 @@ public class CityManager {
 	}
 	private class FireworksSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			elecData = readTable(screen.fireworksTable);
-			printTable(screen.fireworksTable);
+			fireworksData = readTable(screen.fireworksTable);
+			JFileChooser fc = new JFileChooser();
+			fc.showSaveDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				System.out.println(fc.getSelectedFile().getPath());
+				if(fc.getSelectedFile().exists()) {
+					FileManager.printResultList(Algorithms.dijkstra(fireworksData), fc.getSelectedFile());
+				} else {
+					FileManager.createFile(fc.getSelectedFile());
+					FileManager.printResultList(Algorithms.dijkstra(fireworksData), fc.getSelectedFile());
+				}
+			}
 		}
 	}
 	private class FireworksSizePlusListener implements ActionListener {

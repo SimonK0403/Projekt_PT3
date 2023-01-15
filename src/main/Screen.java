@@ -3,7 +3,6 @@ package main;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
-import java.util.*;
 
 /**
  * The class that provides the front-end view of the program
@@ -645,6 +644,11 @@ public class Screen {
 		defaultResultPanel.add(matrixLabel, c);
 	}
 	
+	/**
+	 * Creates a pop-up JFrame that displays a list in which order the explosions happen
+	 * @param title The title of the pop-up.
+	 * @param distanceArray The array containing all distances returned by <code>Algorithms.dijkstra()</code>.
+	 */
 	public void createFireworksResultFrame(String title, int[] distanceArray) {
 		fireworksResultFrame = new JFrame(title);
 		fireworksResultPanel = new JPanel(new GridBagLayout()); //GridBag for centered Components
@@ -654,28 +658,14 @@ public class Screen {
 		fireworksResultFrame.setContentPane(fireworksResultPanel);
 		
 		//Creates a String with the names and value of the vertices ordered by the value
-		int infinity = (int)(0.9*Integer.MAX_VALUE);
 		String labelText = "";
-
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
-
-		for (int i = 0; i < distanceArray.length; i++) {
-			map.put(letters[i], distanceArray[i]);
+		String[] stringArray = FileManager.intArrayToStringArray(distanceArray); //The array in which the distance to each vertice is saved with its letter
+		
+		//Converts the stringArray into a String with HTML-<br>s as linebreaks
+		for(String s : stringArray) {
+			labelText += s + "<br>";
 		}
-		while (!map.isEmpty()) {
-			String minKey = "A";
-			int minValue = Integer.MAX_VALUE;
-			for (Map.Entry<String, Integer> pair : map.entrySet()) { // Iterates through the map and looks for the smallest value in each iteration
-				if (pair.getValue() < minValue) {
-					minKey = pair.getKey();
-					minValue = pair.getValue();
-				}
-			}
-			map.remove(minKey);
-			if (minValue != infinity) {
-				labelText += minKey + " " + minValue + "<br>";
-			}
-		}
+		
 		labelText = "<html>" + labelText + "</html>"; //Wraps the text with html tags to allow linebreaks
 		
 		//Adds a JLabel with the labelText to the panel
