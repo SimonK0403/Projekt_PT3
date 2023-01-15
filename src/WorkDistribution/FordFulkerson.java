@@ -42,6 +42,7 @@ public class FordFulkerson {
         // This code is a method that looks for an augmenting path in a flow network,
         // starting from a source vertex "s" and ending at a sink vertex "t".
         // initialize the data structures
+
         edgeTo = new Edge[flowNetwork.getNumOfVertices()]; // array that will store the last edge on the path from the
                                                            // source to a given vertex.
         marked = new boolean[flowNetwork.getNumOfVertices()]; // boolean array that will mark the vertices that have

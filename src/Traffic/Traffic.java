@@ -1,4 +1,4 @@
-package WaterSupply;
+package Traffic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,14 +8,14 @@ import WorkDistribution.FlowNetwork;
 import WorkDistribution.FordFulkerson;
 import WorkDistribution.Vertex;
 
-public class WaterSupply {
+public class Traffic {
     public static Object[][] input;
     public static FlowNetwork graph;
     public static List<Vertex> vertexList;
     public static FordFulkerson fordFulkerson;
-    public static Object[][] outputWaterMatrix;
+    public static Object[][] outputTrafficMatrix;
 
-    public void getWaterSupply(Object[][] inputGraph) {
+    public void getTraffic(Object[][] inputGraph) {
         // This line creates a 2D array of Objects to represent an adjacency matrix of a
         // flow network
         // Object[][] input = new Object[][]
@@ -52,27 +52,33 @@ public class WaterSupply {
         fordFulkerson = new FordFulkerson(graph, vertexList.get(0),
                 vertexList.get(vertexList.size() - 1));
 
+        createOutputTrafficMatrix();
+
+        System.out.println("The Maximum Flow is: " + fordFulkerson.getMaxFlow());
+    }
+
+    private void createOutputTrafficMatrix() {
         // creates a 2D array of objects to store the result of the flow in a matrix
         // form
-        outputWaterMatrix = new Object[vertexList.size() + 1][vertexList.size() + 1];
+        outputTrafficMatrix = new Object[vertexList.size() + 1][vertexList.size() + 1];
         // Fill the matrix with zeros
         for (int i = 0; i < vertexList.size() + 1; i++) {
             for (int j = 0; j < vertexList.size() + 1; j++) {
-                outputWaterMatrix[i][j] = 0;
+                outputTrafficMatrix[i][j] = 0;
             }
         }
 
         // iterate over all vertices,
         // get the adjacent list for each vertex
-        // and fill the outputWaterMatrix with the edge capacity (edge flow)
+        // and fill the outputTrafficMatrix with the edge capacity (edge flow)
         for (Vertex v : vertexList) {
             for (int i = 0; i < graph.getAdjacenciesList(v).size(); i++) {
-                outputWaterMatrix[graph.getAdjacenciesList(v).get(i).getFromVertex().getId() + 1][graph
+                outputTrafficMatrix[graph.getAdjacenciesList(v).get(i).getFromVertex().getId() + 1][graph
                         .getAdjacenciesList(v)
                         .get(i).getTargetVertex().getId() + 1] = (int) graph.getAdjacenciesList(v).get(i).getFlow();
             }
         }
-        outputWaterMatrix[0][0] = " ";
+        outputTrafficMatrix[0][0] = " ";
         char[] myStrArr = new char[vertexList.size()];
         // A B C D E F G H I ...
         for (int i = 65; i <= vertexList.size() + 64; i++) {
@@ -82,19 +88,17 @@ public class WaterSupply {
 
         for (int i = 0; i < vertexList.size() + 1; i++) {
             if (i < vertexList.size()) {
-                outputWaterMatrix[i + 1][0] = myStrArr[i]; // Insert in first Row A B C...
+                outputTrafficMatrix[i + 1][0] = myStrArr[i]; // Insert in first Row A B C...
             }
             for (int j = 0; j < vertexList.size() + 1; j++) {
                 if (j < vertexList.size()) {
-                    outputWaterMatrix[0][j + 1] = myStrArr[j]; // Insert in first Column A B C...
+                    outputTrafficMatrix[0][j + 1] = myStrArr[j]; // Insert in first Column A B C...
                 }
-                System.out.print(outputWaterMatrix[i][j] + " ");
+                System.out.print(outputTrafficMatrix[i][j] + " ");
             }
             System.out.println();
         }
         System.out.println();
-
-        System.out.println("The Maximum Flow is: " + fordFulkerson.getMaxFlow());
     }
 
     private void addEdgesBetweenVertex() {

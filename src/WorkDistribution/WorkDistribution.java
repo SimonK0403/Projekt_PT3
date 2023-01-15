@@ -7,44 +7,46 @@ public class WorkDistribution {
     public static FlowNetwork graph;
     public static List<Vertex> vertexList;
     public static Object[][] input;
-    public static double capacity = 1;
+    public static final double capacity = 1;
     public static Object[][] outputWorkAssignmentMatrix;
     public static Object[][] outputWorkAssignment;
     public static double maxMatching;
     public static FordFulkerson fordFulkerson;
+    public static int numOfVertices;
 
     public void getWorkDistribution(Object[][] inputGraph) {
 
-        // input = new Object[][] { { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0 },
-        // { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-        // 0, 0, 1, 0 },
-        // { 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        // 0, 1, 0, 0 },
-        // { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-        // 0, 0, 0, 1 },
-        // { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        // 0, 0, 0, 0 },
-        // { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        // 0, 0, 0, 0 },
-        // { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        // 0, 0, 0, 0 },
-        // { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };
+        // input = new Object[][] { { 0, 1, 0, 0, 1, 0, 1, 1, 0, 1 },
+        // { 1, 0, 0, 1, 0, 0, 1, 1, 0, 0 },
+        // { 1, 0, 1, 0, 1, 0, 0, 0, 0, 0 },
+        // { 0, 1, 0, 0, 1, 1, 0, 0, 0, 0 },
+        // { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
+        // { 0, 1, 0, 0, 1, 0, 0, 0, 0, 1 },
+        // { 1, 1, 1, 0, 0, 0, 0, 1, 1, 0 },
+        // { 0, 0, 0, 1, 1, 0, 0, 0, 0, 0 },
+        // { 0, 0, 0, 0, 0, 0, 1, 1, 1, 0 },
+        // { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0 } };
+
         input = new Object[inputGraph.length][inputGraph.length];
+
         for (int i = 0; i < inputGraph.length; i++) {
             for (int j = 0; j < inputGraph.length; j++) {
                 input[i][j] = Integer.valueOf((String) inputGraph[i][j]);
             }
         }
+        numOfVertices = (input.length * 2) + 2;
 
         // creates a new FlowNetwork object called graph with a specified number of
         // vertices (input.length + 3)
-        graph = new FlowNetwork(input.length + 3);
+        graph = new FlowNetwork(numOfVertices);
         // creates a new ArrayList of Vertex objects called vertexList, which will be
         // used to store and manage the vertices in the graph
         vertexList = new ArrayList<>();
 
         addVertexToVertexList();
+
         addEdgesToSourceAndSink();
+
         addEdgesToWorkerAndProjects();
 
         /**
@@ -60,7 +62,8 @@ public class WorkDistribution {
          *                                         maximum flow in the graph from the
          *                                         source vertex to the sink vertex.
          */
-        fordFulkerson = new FordFulkerson(graph, vertexList.get(0), vertexList.get(vertexList.size() - 1));
+
+        fordFulkerson = new FordFulkerson(graph, vertexList.get(0), vertexList.get(numOfVertices - 1));
 
         createWorkAssignmentMatrix();
 
@@ -74,30 +77,40 @@ public class WorkDistribution {
         // creates a new Vertex object with an id of 0 and a label of "s" and adds it to
         // the vertexList. Source Vertex
         vertexList.add(new Vertex(0, "s"));
-        // creates a new Vertex object with an id from 1 to input.length and a label
-        // from "A" to input.length and adds it to the vertexList.
-        for (int i = 1; i <= input.length; i++) {
+
+        // creates a new Vertex object with an id from 1 to numOfVertices - 1 and a
+        // label
+        // from "A" to numOfVertices - 1 and adds it to the vertexList.
+        for (int i = 1; i < numOfVertices - 1; i++) {
+
             vertexList.add(new Vertex(i, Character.toString((char) i + 64)));
         }
-        // creates a new Vertex object with an id of input.length + 1 and a label of "t"
+
+        // creates a new Vertex object with an id of numOfVertices - 1 and a label of
+        // "t"
         // and adds it to the vertexList. Sink Vertex
-        vertexList.add(new Vertex(input.length + 1, "t"));
+        vertexList.add(new Vertex(numOfVertices - 1, "t"));
+
     }
 
     private static void addEdgesToSourceAndSink() {
 
         // creates edges between the source node and Worker nodes in the graph
-        for (int i = 0; i < (vertexList.size() / 2) - 1; i++) {
+        for (int i = 0; i < (numOfVertices / 2) - 1; i++) {
             // for each iteration of the loop, it creates a new Edge object with a capacity
             // of 1 and adds it to the graph.
+
             graph.addEdge(new Edge(vertexList.get(0), vertexList.get(i + 1), capacity));
         }
+
         // creates edges between the Worker node and the sink in the graph
-        for (int i = vertexList.size() / 2; i < vertexList.size() - 1; i++) {
+        for (int i = (numOfVertices / 2); i < numOfVertices - 1; i++) {
             // for each iteration of the loop, it creates a new Edge object with a capacity
             // of 1 and adds it to the graph.
-            graph.addEdge(new Edge(vertexList.get(i), vertexList.get(vertexList.size() - 1), capacity));
+            graph.addEdge(new Edge(vertexList.get(i), vertexList.get((numOfVertices - 1)), capacity));
+
         }
+
     }
 
     private static void addEdgesToWorkerAndProjects() {
@@ -105,19 +118,22 @@ public class WorkDistribution {
         for (int i = 0; i < input.length; i++) {
             for (int j = 0; j < input.length; j++) {
                 if (!input[i][j].equals(0)) {
-                    graph.addEdge(new Edge(vertexList.get(i + 1), vertexList.get(j + 1), capacity));
+
+                    graph.addEdge(new Edge(vertexList.get(i + 1), vertexList.get(j + (numOfVertices / 2)), capacity));
+
                 }
             }
+
         }
 
     }
 
     private static void createWorkAssignmentMatrix() {
         // Create An object Matrix and fill it with 0
-        outputWorkAssignmentMatrix = new Object[vertexList.size() + 1][vertexList.size() + 1];
+        outputWorkAssignmentMatrix = new Object[numOfVertices + 1][numOfVertices + 1];
 
-        for (int i = 0; i < vertexList.size() + 1; i++) {
-            for (int j = 0; j < vertexList.size() + 1; j++) {
+        for (int i = 0; i < numOfVertices + 1; i++) {
+            for (int j = 0; j < numOfVertices + 1; j++) {
                 outputWorkAssignmentMatrix[i][j] = 0;
             }
         }
@@ -125,17 +141,18 @@ public class WorkDistribution {
         // Get Adjacentlist and Fill outputWorkAssignmentMatrix with capacity
         for (Vertex v : vertexList) {
             for (int i = 0; i < graph.getAdjacenciesList(v).size(); i++) {
+
                 outputWorkAssignmentMatrix[graph.getAdjacenciesList(v).get(i).getFromVertex().getId() + 1][graph
                         .getAdjacenciesList(v).get(i).getTargetVertex().getId()
                         + 1] = (int) graph.getAdjacenciesList(v).get(i).getFlow();
             }
         }
 
-        char[] myStrArr = new char[vertexList.size() + 2];
+        char[] myStrArr = new char[vertexList.size() + 1];
         outputWorkAssignmentMatrix[0][0] = " ";
 
         myStrArr[0] = 's'; // source
-        myStrArr[vertexList.size() + 1] = 't'; // sink
+        myStrArr[vertexList.size() - 1] = 't'; // sink
         // A B C D E F G H I ...
         for (int i = 1; i < vertexList.size() - 1; i++) {
             myStrArr[i] = (char) (i + 64);
@@ -166,16 +183,18 @@ public class WorkDistribution {
         outputWorkAssignment = new Object[(outputWorkAssignmentMatrix.length - 1)
                 / 2][(outputWorkAssignmentMatrix.length - 1) / 2];
 
-        int resultMatrixLen = (outputWorkAssignmentMatrix.length - 1) / 2;
+        int resultMatrixLen = ((outputWorkAssignmentMatrix.length - 1) / 2) - 1;
         int matrixRow = 0;
         int matrixCol = 0;
         int k = 0;
-        for (int i = 0; i < resultMatrixLen - 1; i++) {
+
+        for (int i = 0; i < resultMatrixLen; i++) {
             matrixRow = i + 2;
-            for (int j = 0; j < resultMatrixLen - 1; j++) {
-                matrixCol = j + 9;
+            for (int j = 0; j < resultMatrixLen; j++) {
+                matrixCol = j + resultMatrixLen + 2;
+
                 if (!outputWorkAssignmentMatrix[matrixRow][matrixCol].equals(0)) {
-                    System.out.print((char) (i + 65) + " --> " + (char) (j + 72));
+                    System.out.print((char) (i + 65) + " --> " + (char) (j + 65 + resultMatrixLen));
                     outputWorkAssignment[0][k] = (char) (i + 65) + " --> " + (char) (j + 72);
                     k++;
                 }

@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import Postman.Postman;
+import Traffic.Traffic;
 import WaterSupply.WaterSupply;
 import WorkDistribution.WorkDistribution;
 
@@ -25,11 +26,13 @@ public class CityManager {
 	private Screen screen;
 	public Object[][] roadData;
 	public Object[][] waterData;
+	public Object[][] inputMatrixWater;
 	public Object[][] elecData;
 	public Object[][] fireworksData;
 	public Object[][] invitationsData;
 	public Object[][] inputMatrixInvitation;
 	public Object[][] trafficData;
+	public Object[][] inputMatrixTraffic;
 	public Object[][] employeesData;
 	public Object[][] inputMatrixEmployees;
 
@@ -49,15 +52,6 @@ public class CityManager {
 		screen.employees.addActionListener(new EmployeesListener());
 	}
 
-	private void addEmployeesListeners() {
-		screen.employeesReadFile.addActionListener(new EmployeesReadFileListener());
-		screen.employeesSaveChanges.addActionListener(new EmployeesSaveListener());
-		screen.employeesSizePlus.addActionListener(new EmployeesSizePlusListener());
-		screen.employeesSizeMinus.addActionListener(new EmployeesSizeMinusListener());
-		screen.calculateEmployees.addActionListener(new calculateEmployees());
-		screen.deleteEmployeesTable.addActionListener(new DeleteEmployeesTableListener());
-	}
-
 	private void addRoadsListeners() {
 		screen.roadReadFile.addActionListener(new RoadReadFileListener());
 		screen.roadSaveChanges.addActionListener(new RoadSaveListener());
@@ -71,6 +65,7 @@ public class CityManager {
 		screen.waterSaveChanges.addActionListener(new WaterSaveListener());
 		screen.waterSizePlus.addActionListener(new WaterSizePlusListener());
 		screen.waterSizeMinus.addActionListener(new WaterSizeMinusListener());
+		screen.calculateWater.addActionListener(new CalculateWater());
 		screen.deleteWaterTable.addActionListener(new DeleteWaterTableListener());
 	}
 
@@ -95,7 +90,7 @@ public class CityManager {
 		screen.invitationsSaveChanges.addActionListener(new InvitationsSaveListener());
 		screen.invitationsSizePlus.addActionListener(new InvitationsSizePlusListener());
 		screen.invitationsSizeMinus.addActionListener(new InvitationsSizeMinusListener());
-		screen.calculateInvitations.addActionListener(new calculateInvitations());
+		screen.calculateInvitations.addActionListener(new CalculateInvitations());
 		screen.deleteInvitationsTable.addActionListener(new DeleteInvitationsTableListener());
 
 	}
@@ -105,7 +100,17 @@ public class CityManager {
 		screen.trafficSaveChanges.addActionListener(new TrafficSaveListener());
 		screen.trafficSizePlus.addActionListener(new TrafficSizePlusListener());
 		screen.trafficSizeMinus.addActionListener(new TrafficSizeMinusListener());
+		screen.calculateTraffic.addActionListener(new CalculateTraffic());
 		screen.deleteTrafficTable.addActionListener(new DeleteTrafficTableListener());
+	}
+
+	private void addEmployeesListeners() {
+		screen.employeesReadFile.addActionListener(new EmployeesReadFileListener());
+		screen.employeesSaveChanges.addActionListener(new EmployeesSaveListener());
+		screen.employeesSizePlus.addActionListener(new EmployeesSizePlusListener());
+		screen.employeesSizeMinus.addActionListener(new EmployeesSizeMinusListener());
+		screen.calculateEmployees.addActionListener(new CalculateEmployees());
+		screen.deleteEmployeesTable.addActionListener(new DeleteEmployeesTableListener());
 	}
 
 	/**
@@ -195,6 +200,17 @@ public class CityManager {
 	}
 
 	private void fillTableEmployees(JTable table, Object[][] data) {
+		TableModel tm = table.getModel();
+		int numRows = data.length;
+		int numCols = data.length;
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numCols; j++) {
+				tm.setValueAt(data[i][j], i, j);
+			}
+		}
+	}
+
+	private void fillTableWater(JTable table, Object[][] data) {
 		TableModel tm = table.getModel();
 		int numRows = data.length;
 		int numCols = data.length;
@@ -330,13 +346,9 @@ public class CityManager {
 			JFileChooser fc = new JFileChooser();
 			fc.showOpenDialog(screen.frame);
 			if (!(fc.getSelectedFile() == null)) {
-				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
-				System.out.print(matrix[0][0]);
-				System.out.println("A");
-				System.out.print(Arrays.toString(matrix));
-
-				setTableSize(screen.waterTable, matrix.length);
-				fillTable(screen.waterTable, matrix);
+				inputMatrixWater = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.waterTable, inputMatrixWater.length);
+				fillTable(screen.waterTable, inputMatrixWater);
 			}
 		}
 	}
@@ -357,6 +369,15 @@ public class CityManager {
 	private class WaterSizeMinusListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			changeTableSize(screen.waterTable, '-');
+		}
+	}
+
+	private class CalculateWater implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			WaterSupply waterSupply = new WaterSupply();
+			waterSupply.getWaterSupply(inputMatrixWater);
+			setTableSize(screen.waterTable, waterSupply.outputWaterMatrix.length);
+			fillTableWater(screen.waterTable, waterSupply.outputWaterMatrix);
 		}
 	}
 
@@ -474,7 +495,7 @@ public class CityManager {
 		}
 	}
 
-	private class calculateInvitations implements ActionListener {
+	private class CalculateInvitations implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
 			Postman postman = new Postman();
@@ -521,13 +542,15 @@ public class CityManager {
 		}
 	}
 
-	private class calculateEmployees implements ActionListener {
+	private class CalculateEmployees implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
 			WorkDistribution workDistribution = new WorkDistribution();
 			workDistribution.getWorkDistribution(inputMatrixEmployees);
-			setTableSize(screen.employeesTable, workDistribution.outputWorkAssignmentMatrix.length);
-			fillTableEmployees(screen.employeesTable, workDistribution.outputWorkAssignmentMatrix);
+			setTableSize(screen.employeesTable,
+					workDistribution.outputWorkAssignmentMatrix.length);
+			fillTableEmployees(screen.employeesTable,
+					workDistribution.outputWorkAssignmentMatrix);
 		}
 	}
 
@@ -566,6 +589,17 @@ public class CityManager {
 	private class TrafficSizeMinusListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			changeTableSize(screen.trafficTable, '-');
+		}
+	}
+
+	private class CalculateTraffic implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			Traffic traffic = new Traffic();
+			traffic.getTraffic(inputMatrixEmployees);
+			setTableSize(screen.employeesTable,
+					traffic.outputTrafficMatrix.length);
+			fillTableEmployees(screen.employeesTable,
+					traffic.outputTrafficMatrix);
 		}
 	}
 

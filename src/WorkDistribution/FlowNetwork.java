@@ -15,11 +15,8 @@ public class FlowNetwork {
         // create a list of edges for each vertex
         for (int i = 0; i < numOfVertices; ++i) {
             List<Edge> edgeList = new ArrayList<>();
-
             adjacenciesList.add(edgeList);
-
         }
-
     }
 
     public int getNumOfVertices() {
