@@ -25,16 +25,29 @@ public class CityManager {
 
 	private Screen screen;
 	public Object[][] roadData;
+
 	public Object[][] waterData;
 	public Object[][] inputMatrixWater;
+	public Object[][] outputMatrixWater;
+	public Object[] maxFlowWaterSuplly;
+
 	public Object[][] elecData;
 	public Object[][] fireworksData;
+
 	public Object[][] invitationsData;
 	public Object[][] inputMatrixInvitation;
+	public Object[][] outputMatrixInvitation;
+	public Object[] invitacionRoad;
+
 	public Object[][] trafficData;
 	public Object[][] inputMatrixTraffic;
+	public Object[][] outputMatrixTraffic;
+	public Object[] maxFlowTraffic;
+
 	public Object[][] employeesData;
 	public Object[][] inputMatrixEmployees;
+	public Object[][] outputMatrixEmployees;
+	public Object[] employeesAssignment;
 
 	public void run() {
 		screen = new Screen();
@@ -181,6 +194,17 @@ public class CityManager {
 		TableModel tm = table.getModel();
 		int numRows = data.length;
 		int numCols = data[0].length;
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numCols; j++) {
+				tm.setValueAt(data[i][j], i, j);
+			}
+		}
+	}
+
+	private void fillTableTraffic(JTable table, Object[][] data) {
+		TableModel tm = table.getModel();
+		int numRows = data.length;
+		int numCols = data.length;
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numCols; j++) {
 				tm.setValueAt(data[i][j], i, j);
@@ -347,6 +371,7 @@ public class CityManager {
 			fc.showOpenDialog(screen.frame);
 			if (!(fc.getSelectedFile() == null)) {
 				inputMatrixWater = FileManager.readFile(fc.getSelectedFile());
+
 				setTableSize(screen.waterTable, inputMatrixWater.length);
 				fillTable(screen.waterTable, inputMatrixWater);
 			}
@@ -376,6 +401,8 @@ public class CityManager {
 		public void actionPerformed(ActionEvent e) {
 			WaterSupply waterSupply = new WaterSupply();
 			waterSupply.getWaterSupply(inputMatrixWater);
+			outputMatrixWater = waterSupply.outputWaterMatrix; // Matrix
+			maxFlowWaterSuplly = waterSupply.maxFlow; // String Output
 			setTableSize(screen.waterTable, waterSupply.outputWaterMatrix.length);
 			fillTableWater(screen.waterTable, waterSupply.outputWaterMatrix);
 		}
@@ -500,6 +527,8 @@ public class CityManager {
 
 			Postman postman = new Postman();
 			postman.getPostman(inputMatrixInvitation);
+			outputMatrixInvitation = postman.eulerianMatrix; // String Matrix
+			invitacionRoad = postman.outputPostmanRoad; // String
 			setTableSize(screen.invitationsTable, postman.eulerianMatrix.length);
 			fillTableInvitation(screen.invitationsTable, postman.eulerianMatrix);
 		}
@@ -547,6 +576,9 @@ public class CityManager {
 
 			WorkDistribution workDistribution = new WorkDistribution();
 			workDistribution.getWorkDistribution(inputMatrixEmployees);
+			outputMatrixEmployees = workDistribution.outputWorkAssignmentMatrix; // String Matrix
+			employeesAssignment = workDistribution.outputWorkAssignment; // String output
+
 			setTableSize(screen.employeesTable,
 					workDistribution.outputWorkAssignmentMatrix.length);
 			fillTableEmployees(screen.employeesTable,
@@ -566,9 +598,9 @@ public class CityManager {
 			JFileChooser fc = new JFileChooser();
 			fc.showOpenDialog(screen.frame);
 			if (!(fc.getSelectedFile() == null)) {
-				Object[][] matrix = FileManager.readFile(fc.getSelectedFile());
-				setTableSize(screen.trafficTable, matrix.length);
-				fillTable(screen.trafficTable, matrix);
+				inputMatrixTraffic = FileManager.readFile(fc.getSelectedFile());
+				setTableSize(screen.trafficTable, inputMatrixTraffic.length);
+				fillTable(screen.trafficTable, inputMatrixTraffic);
 			}
 		}
 	}
@@ -595,10 +627,12 @@ public class CityManager {
 	private class CalculateTraffic implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			Traffic traffic = new Traffic();
-			traffic.getTraffic(inputMatrixEmployees);
-			setTableSize(screen.employeesTable,
+			traffic.getTraffic(inputMatrixTraffic);
+			outputMatrixTraffic = traffic.outputTrafficMatrix; // String matrix
+			maxFlowTraffic = traffic.maxFlow; // String Output
+			setTableSize(screen.trafficTable,
 					traffic.outputTrafficMatrix.length);
-			fillTableEmployees(screen.employeesTable,
+			fillTableTraffic(screen.trafficTable,
 					traffic.outputTrafficMatrix);
 		}
 	}

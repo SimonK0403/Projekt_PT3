@@ -8,6 +8,8 @@ public class Postman {
     public static Object[][] eulerianMatrix;
     public static List<Integer> result;
     public static Object[][] output;
+    public static Object[][] input;
+    public static Object[] outputPostmanRoad;
 
     /**
      * Check if the input array is a square matrix and symmetric matrix indicating
@@ -233,7 +235,7 @@ public class Postman {
         // Object[][] notEulerian = new Object[][] { { 0, 1, 0, 0, 0 }, { 1, 0, 1, 0, 0
         // }, { 0, 1, 0, 1, 0 },
         // { 0, 0, 1, 0, 1 }, { 0, 0, 0, 1, 0 } };
-        Object[][] input = new Object[inputGraph.length][inputGraph.length];
+        input = new Object[inputGraph.length][inputGraph.length];
         for (int i = 0; i < inputGraph.length; i++) {
             for (int j = 0; j < inputGraph.length; j++) {
                 input[i][j] = Integer.valueOf((String) inputGraph[i][j]);
@@ -257,8 +259,8 @@ public class Postman {
                     eulerianMatrix = toMatrix(eulerianCycle, input);
 
                     printMatrix(eulerianMatrix);
-
-                    System.out.println(toString(eulerianCycle));
+                    outputPostmanRoad[0] = "The Postman Road is: " + toString(eulerianCycle);
+                    System.out.println(outputPostmanRoad[0]);
 
                 } else {
                     System.out.println("-  Not an Eulerian Cycle Graph");

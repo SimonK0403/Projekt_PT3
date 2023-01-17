@@ -1,6 +1,7 @@
 package WaterSupply;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import WorkDistribution.Edge;
@@ -14,6 +15,7 @@ public class WaterSupply {
     public static List<Vertex> vertexList;
     public static FordFulkerson fordFulkerson;
     public static Object[][] outputWaterMatrix;
+    public static Object[] maxFlow;
 
     public void getWaterSupply(Object[][] inputGraph) {
         // This line creates a 2D array of Objects to represent an adjacency matrix of a
@@ -94,7 +96,32 @@ public class WaterSupply {
         }
         System.out.println();
 
+        removeLabelsOfOutputMatrix();
+
         System.out.println("The Maximum Flow is: " + fordFulkerson.getMaxFlow());
+
+        maxFlow = new Object[1];
+        maxFlow[0] = "The Maximum Flow is: " + fordFulkerson.getMaxFlow();
+        System.out.println(maxFlow[0]);
+    }
+
+    private void removeLabelsOfOutputMatrix() {
+        // remove the first row
+        outputWaterMatrix = Arrays.copyOfRange(outputWaterMatrix, 1, outputWaterMatrix.length);
+
+        // remove the first element of each following row
+        for (int i = 0; i < outputWaterMatrix.length; i++) {
+            outputWaterMatrix[i] = Arrays.copyOfRange(outputWaterMatrix[i], 1, outputWaterMatrix[i].length);
+        }
+
+        // print the modified array
+        for (int i = 0; i < outputWaterMatrix.length; i++) {
+            for (int j = 0; j < outputWaterMatrix[i].length; j++) {
+                System.out.print(outputWaterMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+
     }
 
     private void addEdgesBetweenVertex() {

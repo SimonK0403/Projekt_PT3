@@ -1,6 +1,7 @@
 package Traffic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import WorkDistribution.Edge;
@@ -14,6 +15,7 @@ public class Traffic {
     public static List<Vertex> vertexList;
     public static FordFulkerson fordFulkerson;
     public static Object[][] outputTrafficMatrix;
+    public static Object[] maxFlow;
 
     public void getTraffic(Object[][] inputGraph) {
         // This line creates a 2D array of Objects to represent an adjacency matrix of a
@@ -54,7 +56,31 @@ public class Traffic {
 
         createOutputTrafficMatrix();
 
+        removeLabelsOfOutputMatrix();
+
         System.out.println("The Maximum Flow is: " + fordFulkerson.getMaxFlow());
+
+        Object[] maxFlow = new Object[1];
+        maxFlow[0] = "The Maximum Flow is: " + fordFulkerson.getMaxFlow();
+        System.out.println(maxFlow[0]);
+    }
+
+    private void removeLabelsOfOutputMatrix() {
+        // remove the first row
+        outputTrafficMatrix = Arrays.copyOfRange(outputTrafficMatrix, 1, outputTrafficMatrix.length);
+
+        // remove the first element of each following row
+        for (int i = 0; i < outputTrafficMatrix.length; i++) {
+            outputTrafficMatrix[i] = Arrays.copyOfRange(outputTrafficMatrix[i], 1, outputTrafficMatrix[i].length);
+        }
+
+        // print the modified array
+        for (int i = 0; i < outputTrafficMatrix.length; i++) {
+            for (int j = 0; j < outputTrafficMatrix[i].length; j++) {
+                System.out.print(outputTrafficMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     private void createOutputTrafficMatrix() {

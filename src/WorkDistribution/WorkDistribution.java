@@ -1,6 +1,7 @@
 package WorkDistribution;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WorkDistribution {
@@ -9,7 +10,7 @@ public class WorkDistribution {
     public static Object[][] input;
     public static final double capacity = 1;
     public static Object[][] outputWorkAssignmentMatrix;
-    public static Object[][] outputWorkAssignment;
+    public static Object[] outputWorkAssignment;
     public static double maxMatching;
     public static FordFulkerson fordFulkerson;
     public static int numOfVertices;
@@ -71,6 +72,28 @@ public class WorkDistribution {
 
         createMaxMatching();
 
+        removeLabelsOfOutputMatrix();
+
+    }
+
+    private void removeLabelsOfOutputMatrix() {
+        // remove the first row
+        outputWorkAssignmentMatrix = Arrays.copyOfRange(outputWorkAssignmentMatrix, 1,
+                outputWorkAssignmentMatrix.length);
+
+        // remove the first element of each following row
+        for (int i = 0; i < outputWorkAssignmentMatrix.length; i++) {
+            outputWorkAssignmentMatrix[i] = Arrays.copyOfRange(outputWorkAssignmentMatrix[i], 1,
+                    outputWorkAssignmentMatrix[i].length);
+        }
+
+        // print the modified array
+        for (int i = 0; i < outputWorkAssignmentMatrix.length; i++) {
+            for (int j = 0; j < outputWorkAssignmentMatrix[i].length; j++) {
+                System.out.print(outputWorkAssignmentMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
     private static void addVertexToVertexList() {
@@ -181,12 +204,13 @@ public class WorkDistribution {
 
     private static void createWorkAssignment() {
         outputWorkAssignment = new Object[(outputWorkAssignmentMatrix.length - 1)
-                / 2][(outputWorkAssignmentMatrix.length - 1) / 2];
+                / 2];
 
         int resultMatrixLen = ((outputWorkAssignmentMatrix.length - 1) / 2) - 1;
         int matrixRow = 0;
         int matrixCol = 0;
-        int k = 0;
+        int k = 1;
+        outputWorkAssignment[0] = "The Maximum Matching is: " + maxMatching;
 
         for (int i = 0; i < resultMatrixLen; i++) {
             matrixRow = i + 2;
@@ -195,7 +219,7 @@ public class WorkDistribution {
 
                 if (!outputWorkAssignmentMatrix[matrixRow][matrixCol].equals(0)) {
                     System.out.print((char) (i + 65) + " --> " + (char) (j + 65 + resultMatrixLen));
-                    outputWorkAssignment[0][k] = (char) (i + 65) + " --> " + (char) (j + 72);
+                    outputWorkAssignment[k] = (char) (i + 65) + " --> " + (char) (j + 72);
                     k++;
                 }
             }
