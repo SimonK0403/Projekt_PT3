@@ -15,8 +15,8 @@ public class Screen {
 	public JButton back = new JButton("<< Zurück");
 	private Dimension standardOpButtonSize = new Dimension(100, 30);
 	//For the result pop-up-frame
-	public JFrame defaultResultFrame;
-	public JPanel defaultResultPanel;
+	public JFrame matrixResultFrame;
+	public JPanel matrixResultPanel;
 	public JFrame listResultFrame;
 	public JPanel listResultPanel;
 	private String[] letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -605,18 +605,19 @@ public class Screen {
 	}
 	
 	/**
-	 * Creates a new JFrame within the main frame and displays a matrix
+	 * Creates a new JFrame within the main frame and displays a matrix.
 	 * @param title The title of the new JFrame
 	 * @param matrix The matrix to be displayed
 	 * @param upperTriangularMatrix Whether or not the matrix is an upper triangular matrix; shows only lower triangle if true
+	 * @param extraText A small text that can be added below the matrix, for example for showing maximum flow.
 	 */
-	public void createMatrixResultFrame(String title, Object[][] matrix, boolean upperTriangularMatrix) {
-		defaultResultFrame = new JFrame(title);
-		defaultResultPanel = new JPanel(new GridBagLayout());
-		defaultResultFrame.setSize(562, 562);
-		defaultResultFrame.setLocationRelativeTo(frame);
-		defaultResultFrame.setVisible(true);
-		defaultResultFrame.setContentPane(defaultResultPanel);
+	public void createMatrixResultFrame(String title, Object[][] matrix, boolean upperTriangularMatrix, String extraText) {
+		matrixResultFrame = new JFrame(title);
+		matrixResultPanel = new JPanel(new GridBagLayout());
+		matrixResultFrame.setSize(562, 562);
+		matrixResultFrame.setLocationRelativeTo(frame);
+		matrixResultFrame.setVisible(true);
+		matrixResultFrame.setContentPane(matrixResultPanel);
 		
 		String matrixAsString = "";
 		if(upperTriangularMatrix) {
@@ -640,8 +641,25 @@ public class Screen {
 		
 		GridBagConstraints c = new GridBagConstraints();
 		JLabel matrixLabel = new JLabel(matrixAsString);
+		c.gridy = 0;
 		matrixLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
-		defaultResultPanel.add(matrixLabel, c);
+		matrixResultPanel.add(matrixLabel, c);
+		
+		if(extraText != null) {
+			JLabel extraLabel = new JLabel(extraText);
+			c.gridy = 1;
+			matrixResultPanel.add(extraLabel, c);
+		}
+	}
+	
+	/**
+	 * Creates a new JFrame within the main frame and displays a matrix.
+	 * @param title The title of the new JFrame
+	 * @param matrix The matrix to be displayed
+	 * @param upperTriangularMatrix Whether or not the matrix is an upper triangular matrix; shows only lower triangle if true
+	 */
+	public void createMatrixResultFrame(String title, Object[][] matrix, boolean upperTriangularMatrix) {
+		createMatrixResultFrame(title, matrix, upperTriangularMatrix, null);
 	}
 	
 	/**
