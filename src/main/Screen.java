@@ -17,8 +17,8 @@ public class Screen {
 	//For the result pop-up-frame
 	public JFrame defaultResultFrame;
 	public JPanel defaultResultPanel;
-	public JFrame fireworksResultFrame;
-	public JPanel fireworksResultPanel;
+	public JFrame listResultFrame;
+	public JPanel listResultPanel;
 	private String[] letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	//For the main screen
 	public JButton roads;
@@ -610,7 +610,7 @@ public class Screen {
 	 * @param matrix The matrix to be displayed
 	 * @param upperTriangularMatrix Whether or not the matrix is an upper triangular matrix; shows only lower triangle if true
 	 */
-	public void createStandardResultFrame(String title, Object[][] matrix, boolean upperTriangularMatrix) {
+	public void createMatrixResultFrame(String title, Object[][] matrix, boolean upperTriangularMatrix) {
 		defaultResultFrame = new JFrame(title);
 		defaultResultPanel = new JPanel(new GridBagLayout());
 		defaultResultFrame.setSize(562, 562);
@@ -647,19 +647,18 @@ public class Screen {
 	/**
 	 * Creates a pop-up JFrame that displays a list in which order the explosions happen
 	 * @param title The title of the pop-up.
-	 * @param distanceArray The array containing all distances returned by <code>Algorithms.dijkstra()</code>.
+	 * @param stringArray An Array of Strings to be listed on the frame.
 	 */
-	public void createFireworksResultFrame(String title, int[] distanceArray) {
-		fireworksResultFrame = new JFrame(title);
-		fireworksResultPanel = new JPanel(new GridBagLayout()); //GridBag for centered Components
-		fireworksResultFrame.setSize(562, 562);
-		fireworksResultFrame.setLocationRelativeTo(frame);
-		fireworksResultFrame.setVisible(true);
-		fireworksResultFrame.setContentPane(fireworksResultPanel);
+	public void createListResultFrame(String title, String[] stringArray) {
+		listResultFrame = new JFrame(title);
+		listResultPanel = new JPanel(new GridBagLayout()); //GridBag for centered Components
+		listResultFrame.setSize(562, 562);
+		listResultFrame.setLocationRelativeTo(frame);
+		listResultFrame.setVisible(true);
+		listResultFrame.setContentPane(listResultPanel);
 		
 		//Creates a String with the names and value of the vertices ordered by the value
 		String labelText = "";
-		String[] stringArray = FileManager.intArrayToStringArray(distanceArray); //The array in which the distance to each vertice is saved with its letter
 		
 		//Converts the stringArray into a String with HTML-<br>s as linebreaks
 		for(String s : stringArray) {
@@ -672,7 +671,7 @@ public class Screen {
 		GridBagConstraints c = new GridBagConstraints();
 		JLabel fireworksLabel = new JLabel(labelText);
 		fireworksLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
-		fireworksResultPanel.add(fireworksLabel, c);
+		listResultPanel.add(fireworksLabel, c);
 	}
 	
 	//Places a Button to the main Menu on the specified JPanel that has a BorderLayout

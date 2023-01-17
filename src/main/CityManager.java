@@ -292,7 +292,7 @@ public class CityManager {
 	private class CalculateRoadsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			roadData = readTable(screen.roadTable);
-			screen.createStandardResultFrame("Straﬂennetz als Adjazenzmatrix", Algorithms.prim(roadData), true);
+			screen.createMatrixResultFrame("Straﬂennetz als Adjazenzmatrix", Algorithms.prim(roadData), true);
 		}
 	}
 	private class DeleteRoadTableListener implements ActionListener {
@@ -381,7 +381,7 @@ public class CityManager {
 	private class CalculateElecListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			elecData = readTable(screen.elecTable);
-			screen.createStandardResultFrame("Stromnetz als Adjazenzmatrix", Algorithms.prim(elecData, 5), true);
+			screen.createMatrixResultFrame("Stromnetz als Adjazenzmatrix", Algorithms.prim(elecData, 5), true);
 		}
 	}
 	private class DeleteElecTableListener implements ActionListener {
@@ -431,7 +431,7 @@ public class CityManager {
 	private class CalculateFireworksListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			fireworksData = readTable(screen.fireworksTable);
-			screen.createFireworksResultFrame("Abfolge der Explosionen", Algorithms.dijkstra(fireworksData));
+			screen.createListResultFrame("Abfolge der Explosionen", FileManager.intArrayToStringArray(Algorithms.dijkstra(fireworksData)));
 		}
 	}
 	private class DeleteFireworksTableListener implements ActionListener {
