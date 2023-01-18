@@ -531,7 +531,14 @@ public class CityManager {
 	}
 	private class CalculateTrafficListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			trafficData = readTable(screen.trafficTable);
+			Traffic traffic = new Traffic();
+			traffic.getTraffic(trafficData);
 			
+			Object[][] outputMatrix = traffic.outputTrafficMatrix;
+			String maxFlow = traffic.maxFlow;
+			
+			screen.createMatrixResultFrame("Verkehrsführung", outputMatrix, false, "Maximaler Verkehrsdurchfluss: " + maxFlow);
 		}
 	}
 	private class DeleteTrafficTableListener implements ActionListener {

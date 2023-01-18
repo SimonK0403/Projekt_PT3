@@ -15,7 +15,7 @@ public class Traffic {
     public static List<Vertex> vertexList;
     public static FordFulkerson fordFulkerson;
     public static Object[][] outputTrafficMatrix;
-    public static Object[] maxFlow;
+    public static String maxFlow;
 
     public void getTraffic(Object[][] inputGraph) {
         // This line creates a 2D array of Objects to represent an adjacency matrix of a
@@ -35,7 +35,7 @@ public class Traffic {
 
         for (int i = 0; i < inputGraph.length; i++) {
             for (int j = 0; j < inputGraph.length; j++) {
-                input[i][j] = Integer.valueOf((String) inputGraph[i][j]);
+                input[i][j] = inputGraph[i][j];
             }
         }
         // Creates a FlowNetwork object with the number of vertices in the network
@@ -60,9 +60,9 @@ public class Traffic {
 
         System.out.println("The Maximum Flow is: " + fordFulkerson.getMaxFlow());
 
-        Object[] maxFlow = new Object[1];
-        maxFlow[0] = "The Maximum Flow is: " + fordFulkerson.getMaxFlow();
-        System.out.println(maxFlow[0]);
+        //Object[] maxFlow = new Object[1];
+        maxFlow = Double.toString(fordFulkerson.getMaxFlow());
+        System.out.println(maxFlow);
     }
 
     private void removeLabelsOfOutputMatrix() {

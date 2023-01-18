@@ -100,7 +100,6 @@ public class WaterSupply {
 
         System.out.println("The Maximum Flow is: " + fordFulkerson.getMaxFlow());
 
-        //maxFlow = new Object[1];
         maxFlow = Double.toString(fordFulkerson.getMaxFlow());
         System.out.println(maxFlow);
     }
