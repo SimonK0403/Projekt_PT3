@@ -184,12 +184,16 @@ public class FileManager {
 	 */
 	public static void printResultList(int[] distanceArray, File file) {
 		String[] listLines = intArrayToStringArray(distanceArray);
+		printResultList(listLines, file);
+	}
+	
+	public static void printResultList(String[] stringArray, File file) {
 		FileWriter fw;
 		try {
 			fw = new FileWriter(file.getPath());
 			BufferedWriter writer = new BufferedWriter(fw);
 			
-			for(String s : listLines) {
+			for(String s : stringArray) {
 				writer.append(s);
 				writer.newLine();
 			}

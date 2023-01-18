@@ -128,6 +128,7 @@ public class CityManager {
 	 * Prints the JTable to the console
 	 * @param table The JTable to be printed
 	 */
+	@SuppressWarnings("unused")
 	private void printTable(JTable table) {
 		Object[][] matrix = readTable(table);
 		for(int i = 0; i < table.getModel().getRowCount(); i++) {
@@ -321,8 +322,22 @@ public class CityManager {
 	}
 	private class WaterSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			roadData = readTable(screen.waterTable);
-			printTable(screen.waterTable);
+			waterData = readTable(screen.waterTable);
+			JFileChooser fc = new JFileChooser();
+			WaterSupply waterSupply = new WaterSupply();
+			waterSupply.getWaterSupply(waterData);
+			
+			Object[][] outputMatrix = waterSupply.outputWaterMatrix;
+			fc.showSaveDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				System.out.println(fc.getSelectedFile().getPath());
+				if(fc.getSelectedFile().exists()) {
+					FileManager.printResultMatrix(outputMatrix, fc.getSelectedFile(), false);
+				} else {
+					FileManager.createFile(fc.getSelectedFile());
+					FileManager.printResultMatrix(outputMatrix, fc.getSelectedFile(), false);
+				}
+			}
 		}
 	}
 	private class WaterSizePlusListener implements ActionListener {
@@ -468,7 +483,22 @@ public class CityManager {
 	private class InvitationsSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			invitationsData = readTable(screen.invitationsTable);
-			printTable(screen.invitationsTable);
+			JFileChooser fc = new JFileChooser();
+			Postman postman = new Postman();
+			postman.getPostman(invitationsData);
+			
+			String[] route = postman.outputPostmanRoad;
+			
+			fc.showSaveDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				System.out.println(fc.getSelectedFile().getPath());
+				if(fc.getSelectedFile().exists()) {
+					FileManager.printResultList(route, fc.getSelectedFile());
+				} else {
+					FileManager.createFile(fc.getSelectedFile());
+					FileManager.printResultList(route, fc.getSelectedFile());;
+				}
+			}
 		}
 	}
 	private class InvitationsSizePlusListener implements ActionListener {
@@ -517,7 +547,22 @@ public class CityManager {
 	private class TrafficSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			trafficData = readTable(screen.trafficTable);
-			printTable(screen.trafficTable);
+			JFileChooser fc = new JFileChooser();
+			Traffic traffic = new Traffic();
+			traffic.getTraffic(trafficData);
+			
+			Object[][] outputMatrix = traffic.outputTrafficMatrix;
+			
+			fc.showSaveDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				System.out.println(fc.getSelectedFile().getPath());
+				if(fc.getSelectedFile().exists()) {
+					FileManager.printResultMatrix(outputMatrix, fc.getSelectedFile(), false);
+				} else {
+					FileManager.createFile(fc.getSelectedFile());
+					FileManager.printResultMatrix(outputMatrix, fc.getSelectedFile(), false);
+				}
+			}
 		}
 	}
 	private class TrafficSizePlusListener implements ActionListener {
@@ -562,8 +607,23 @@ public class CityManager {
 	}
 	private class EmployeesSaveListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			trafficData = readTable(screen.employeesTable);
-			printTable(screen.employeesTable);
+			employeesData = readTable(screen.employeesTable);
+			JFileChooser fc = new JFileChooser();
+			WorkDistribution workDistribution = new WorkDistribution();
+			workDistribution.getWorkDistribution(employeesData);
+			
+			String[] employeesAssignment = workDistribution.outputWorkAssignment;
+			
+			fc.showSaveDialog(screen.frame);
+			if(!(fc.getSelectedFile() == null)) {
+				System.out.println(fc.getSelectedFile().getPath());
+				if(fc.getSelectedFile().exists()) {
+					FileManager.printResultList(employeesAssignment, fc.getSelectedFile());
+				} else {
+					FileManager.createFile(fc.getSelectedFile());
+					FileManager.printResultList(employeesAssignment, fc.getSelectedFile());;
+				}
+			}
 		}
 	}
 	private class EmployeesSizePlusListener implements ActionListener {
