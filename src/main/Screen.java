@@ -44,8 +44,6 @@ public class Screen {
 	private JPanel waterOpPanel;
 	public DefaultTableModel waterTableModel = new DefaultTableModel(10, 10);
 	public JTable waterTable;
-	public JLabel waterNeededDesc;
-	public JTextField waterNeeded;
 	public JButton waterReadFile;
 	public JButton waterSaveChanges;
 	public JButton waterSizePlus;
@@ -204,21 +202,21 @@ public class Screen {
 		d.gridy = 0;
 		roadOpPanel.add(roadReadFile, d);
 		
-		roadSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		roadOpPanel.add(roadSaveChanges, d);
-		
 		roadSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		roadOpPanel.add(roadSizePlus, d);
 		
 		roadSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		roadOpPanel.add(roadSizeMinus, d);
 		
 		calculateRoads = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		roadOpPanel.add(calculateRoads, d);
+		
+		roadSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		roadOpPanel.add(roadSaveChanges, d);
 		
 		deleteRoadTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -259,39 +257,30 @@ public class Screen {
 		d.insets = new Insets(5, 0, 5, 0);
 		d.anchor = GridBagConstraints.WEST;
 		
-		waterNeededDesc = new JLabel("Benötigtes Wasser in m³/s:");
-		d.gridy = 0;
-		waterOpPanel.add(waterNeededDesc, d);
-		
-		waterNeeded = new JTextField();
-		d.gridy = 1;
-		waterOpPanel.add(waterNeeded, d);
-		
 		waterReadFile = new JButton("Einlesen");
-		d.gridy = 2;
+		d.gridy = 0;
 		waterOpPanel.add(waterReadFile, d);
 		
-		waterSaveChanges = new JButton("Speichern");
-		d.gridy = 3;
-		waterOpPanel.add(waterSaveChanges, d);
-		
 		waterSizePlus = new JButton("+");
-		d.gridy = 4;
+		d.gridy = 1;
 		waterOpPanel.add(waterSizePlus, d);
 		
 		waterSizeMinus = new JButton("-");
-		d.gridy = 5;
+		d.gridy = 2;
 		waterOpPanel.add(waterSizeMinus, d);
 		
 		calculateWater = new JButton("Berechnen");
-		d.gridy = 6;
+		d.gridy = 3;
 		waterOpPanel.add(calculateWater, d);
 		
+		waterSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		waterOpPanel.add(waterSaveChanges, d);
+		
 		deleteWaterTable = new JButton("Löschen");
-		d.gridy = 7;
+		d.gridy = 5;
 		waterOpPanel.add(deleteWaterTable, d);
 
-		waterNeeded.setPreferredSize(standardOpButtonSize);
 		waterReadFile.setPreferredSize(standardOpButtonSize);
 		waterSaveChanges.setPreferredSize(standardOpButtonSize);
 		waterSizePlus.setPreferredSize(standardOpButtonSize);
@@ -332,21 +321,21 @@ public class Screen {
 		d.gridy = 0;
 		elecOpPanel.add(elecReadFile, d);
 		
-		elecSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		elecOpPanel.add(elecSaveChanges, d);
-		
 		elecSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		elecOpPanel.add(elecSizePlus, d);
 		
 		elecSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		elecOpPanel.add(elecSizeMinus, d);
 		
 		calculateElec = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		elecOpPanel.add(calculateElec, d);
+		
+		elecSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		elecOpPanel.add(elecSaveChanges, d);
 		
 		deleteElecTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -392,21 +381,21 @@ public class Screen {
 		d.gridy = 0;
 		fireworksOpPanel.add(fireworksReadFile, d);
 		
-		fireworksSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		fireworksOpPanel.add(fireworksSaveChanges, d);
-		
 		fireworksSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		fireworksOpPanel.add(fireworksSizePlus, d);
 		
 		fireworksSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		fireworksOpPanel.add(fireworksSizeMinus, d);
 		
 		calculateFireworks = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		fireworksOpPanel.add(calculateFireworks, d);
+		
+		fireworksSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		fireworksOpPanel.add(fireworksSaveChanges, d);
 		
 		deleteFireworksTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -452,21 +441,21 @@ public class Screen {
 		d.gridy = 0;
 		invitationsOpPanel.add(invitationsReadFile, d);
 		
-		invitationsSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		invitationsOpPanel.add(invitationsSaveChanges, d);
-		
 		invitationsSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		invitationsOpPanel.add(invitationsSizePlus, d);
 		
 		invitationsSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		invitationsOpPanel.add(invitationsSizeMinus, d);
 		
 		calculateInvitations = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		invitationsOpPanel.add(calculateInvitations, d);
+		
+		invitationsSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		invitationsOpPanel.add(invitationsSaveChanges, d);
 		
 		deleteInvitationsTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -512,21 +501,21 @@ public class Screen {
 		d.gridy = 0;
 		trafficOpPanel.add(trafficReadFile, d);
 		
-		trafficSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		trafficOpPanel.add(trafficSaveChanges, d);
-		
 		trafficSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		trafficOpPanel.add(trafficSizePlus, d);
 		
 		trafficSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		trafficOpPanel.add(trafficSizeMinus, d);
 		
 		calculateTraffic = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		trafficOpPanel.add(calculateTraffic, d);
+		
+		trafficSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		trafficOpPanel.add(trafficSaveChanges, d);
 		
 		deleteTrafficTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -572,21 +561,21 @@ public class Screen {
 		d.gridy = 0;
 		employeesOpPanel.add(employeesReadFile, d);
 		
-		employeesSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		employeesOpPanel.add(employeesSaveChanges, d);
-		
 		employeesSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		employeesOpPanel.add(employeesSizePlus, d);
 		
 		employeesSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		employeesOpPanel.add(employeesSizeMinus, d);
 		
 		calculateEmployees = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		employeesOpPanel.add(calculateEmployees, d);
+		
+		employeesSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		employeesOpPanel.add(employeesSaveChanges, d);
 		
 		deleteEmployeesTable = new JButton("Löschen");
 		d.gridy = 5;
