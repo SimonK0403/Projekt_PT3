@@ -9,7 +9,7 @@ public class Postman {
     public static List<Integer> result;
     public static Object[][] output;
     public static Object[][] input;
-    public static Object[] outputPostmanRoad;
+    public static String[] outputPostmanRoad;
 
     /**
      * Check if the input array is a square matrix and symmetric matrix indicating
@@ -238,7 +238,7 @@ public class Postman {
         input = new Object[inputGraph.length][inputGraph.length];
         for (int i = 0; i < inputGraph.length; i++) {
             for (int j = 0; j < inputGraph.length; j++) {
-                input[i][j] = Integer.valueOf((String) inputGraph[i][j]);
+                input[i][j] = inputGraph[i][j];
             }
         }
 

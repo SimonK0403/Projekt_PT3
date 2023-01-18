@@ -482,7 +482,17 @@ public class CityManager {
 	}
 	private class CalculateInvitationsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			invitationsData = readTable(screen.invitationsTable);
+			Postman postman = new Postman();
+			postman.getPostman(invitationsData);
 			
+			String[] route = postman.outputPostmanRoad;
+			
+			if(!(route == null)) {
+				screen.createListResultFrame("Route des Postboten", route);
+			} else {
+				JOptionPane.showMessageDialog(screen.frame, "Es konnte keine Route gefunden werden");
+			}
 		}
 	}
 	private class DeleteInvitationsTableListener implements ActionListener {
