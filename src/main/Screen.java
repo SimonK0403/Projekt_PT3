@@ -6,8 +6,6 @@ import java.awt.*;
 
 /**
  * The class that provides the front-end view of the program
- * @author Simon
- *
  */
 public class Screen {
 	
@@ -15,8 +13,13 @@ public class Screen {
 	public JFrame frame;
 	public JPanel mainPanel;
 	public JButton back = new JButton("<< Zurück");
-	public String selectedFileName = "";
 	private Dimension standardOpButtonSize = new Dimension(100, 30);
+	//For the result pop-up-frame
+	public JFrame matrixResultFrame;
+	public JPanel matrixResultPanel;
+	public JFrame listResultFrame;
+	public JPanel listResultPanel;
+	private String[] letters = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	//For the main screen
 	public JButton roads;
 	public JButton water;
@@ -41,8 +44,6 @@ public class Screen {
 	private JPanel waterOpPanel;
 	public DefaultTableModel waterTableModel = new DefaultTableModel(10, 10);
 	public JTable waterTable;
-	public JLabel waterNeededDesc;
-	public JTextField waterNeeded;
 	public JButton waterReadFile;
 	public JButton waterSaveChanges;
 	public JButton waterSizePlus;
@@ -93,6 +94,17 @@ public class Screen {
 	public JButton trafficSizeMinus;
 	public JButton calculateTraffic;
 	public JButton deleteTrafficTable;
+	//For employees screen
+	private JPanel employeesPanel;
+	private JPanel employeesOpPanel;
+	public DefaultTableModel employeesTableModel = new DefaultTableModel(10, 10);
+	public JTable employeesTable;
+	public JButton employeesReadFile;
+	public JButton employeesSaveChanges;
+	public JButton employeesSizePlus;
+	public JButton employeesSizeMinus;
+	public JButton calculateEmployees;
+	public JButton deleteEmployeesTable;
 	
 	
 	
@@ -143,7 +155,7 @@ public class Screen {
 		c.gridy = 5;
 		mainPanel.add(traffic, c);
 		
-		employees = new JButton("Kompetenzenverwaltung");
+		employees = new JButton("Personalverwaltung");
 		c.gridy = 6;
 		mainPanel.add(employees, c);
 		
@@ -190,21 +202,21 @@ public class Screen {
 		d.gridy = 0;
 		roadOpPanel.add(roadReadFile, d);
 		
-		roadSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		roadOpPanel.add(roadSaveChanges, d);
-		
 		roadSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		roadOpPanel.add(roadSizePlus, d);
 		
 		roadSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		roadOpPanel.add(roadSizeMinus, d);
 		
 		calculateRoads = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		roadOpPanel.add(calculateRoads, d);
+		
+		roadSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		roadOpPanel.add(roadSaveChanges, d);
 		
 		deleteRoadTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -245,39 +257,30 @@ public class Screen {
 		d.insets = new Insets(5, 0, 5, 0);
 		d.anchor = GridBagConstraints.WEST;
 		
-		waterNeededDesc = new JLabel("Benötigtes Wasser in m³/s:");
-		d.gridy = 0;
-		waterOpPanel.add(waterNeededDesc, d);
-		
-		waterNeeded = new JTextField();
-		d.gridy = 1;
-		waterOpPanel.add(waterNeeded, d);
-		
 		waterReadFile = new JButton("Einlesen");
-		d.gridy = 2;
+		d.gridy = 0;
 		waterOpPanel.add(waterReadFile, d);
 		
-		waterSaveChanges = new JButton("Speichern");
-		d.gridy = 3;
-		waterOpPanel.add(waterSaveChanges, d);
-		
 		waterSizePlus = new JButton("+");
-		d.gridy = 4;
+		d.gridy = 1;
 		waterOpPanel.add(waterSizePlus, d);
 		
 		waterSizeMinus = new JButton("-");
-		d.gridy = 5;
+		d.gridy = 2;
 		waterOpPanel.add(waterSizeMinus, d);
 		
 		calculateWater = new JButton("Berechnen");
-		d.gridy = 6;
+		d.gridy = 3;
 		waterOpPanel.add(calculateWater, d);
 		
+		waterSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		waterOpPanel.add(waterSaveChanges, d);
+		
 		deleteWaterTable = new JButton("Löschen");
-		d.gridy = 7;
+		d.gridy = 5;
 		waterOpPanel.add(deleteWaterTable, d);
 
-		waterNeeded.setPreferredSize(standardOpButtonSize);
 		waterReadFile.setPreferredSize(standardOpButtonSize);
 		waterSaveChanges.setPreferredSize(standardOpButtonSize);
 		waterSizePlus.setPreferredSize(standardOpButtonSize);
@@ -318,21 +321,21 @@ public class Screen {
 		d.gridy = 0;
 		elecOpPanel.add(elecReadFile, d);
 		
-		elecSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		elecOpPanel.add(elecSaveChanges, d);
-		
 		elecSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		elecOpPanel.add(elecSizePlus, d);
 		
 		elecSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		elecOpPanel.add(elecSizeMinus, d);
 		
 		calculateElec = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		elecOpPanel.add(calculateElec, d);
+		
+		elecSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		elecOpPanel.add(elecSaveChanges, d);
 		
 		deleteElecTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -378,21 +381,21 @@ public class Screen {
 		d.gridy = 0;
 		fireworksOpPanel.add(fireworksReadFile, d);
 		
-		fireworksSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		fireworksOpPanel.add(fireworksSaveChanges, d);
-		
 		fireworksSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		fireworksOpPanel.add(fireworksSizePlus, d);
 		
 		fireworksSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		fireworksOpPanel.add(fireworksSizeMinus, d);
 		
 		calculateFireworks = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		fireworksOpPanel.add(calculateFireworks, d);
+		
+		fireworksSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		fireworksOpPanel.add(fireworksSaveChanges, d);
 		
 		deleteFireworksTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -438,21 +441,21 @@ public class Screen {
 		d.gridy = 0;
 		invitationsOpPanel.add(invitationsReadFile, d);
 		
-		invitationsSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		invitationsOpPanel.add(invitationsSaveChanges, d);
-		
 		invitationsSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		invitationsOpPanel.add(invitationsSizePlus, d);
 		
 		invitationsSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		invitationsOpPanel.add(invitationsSizeMinus, d);
 		
 		calculateInvitations = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		invitationsOpPanel.add(calculateInvitations, d);
+		
+		invitationsSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		invitationsOpPanel.add(invitationsSaveChanges, d);
 		
 		deleteInvitationsTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -498,21 +501,21 @@ public class Screen {
 		d.gridy = 0;
 		trafficOpPanel.add(trafficReadFile, d);
 		
-		trafficSaveChanges = new JButton("Speichern");
-		d.gridy = 1;
-		trafficOpPanel.add(trafficSaveChanges, d);
-		
 		trafficSizePlus = new JButton("+");
-		d.gridy = 2;
+		d.gridy = 1;
 		trafficOpPanel.add(trafficSizePlus, d);
 		
 		trafficSizeMinus = new JButton("-");
-		d.gridy = 3;
+		d.gridy = 2;
 		trafficOpPanel.add(trafficSizeMinus, d);
 		
 		calculateTraffic = new JButton("Berechnen");
-		d.gridy = 4;
+		d.gridy = 3;
 		trafficOpPanel.add(calculateTraffic, d);
+		
+		trafficSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		trafficOpPanel.add(trafficSaveChanges, d);
 		
 		deleteTrafficTable = new JButton("Löschen");
 		d.gridy = 5;
@@ -534,8 +537,148 @@ public class Screen {
 		mainPanel.removeAll();
 		mainPanel.setLayout(new BorderLayout());
 		placeBackButton(mainPanel);
+		
+		employeesPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(10, 10, 10, 10);
+		
+		//For the traffic panel
+		employeesTable = new JTable(employeesTableModel);
+		c.gridx = 0;
+		setColumnSize(employeesTable, 30);
+		employeesPanel.add(employeesTable, c);
+		
+		employeesOpPanel = new JPanel(new GridBagLayout());
+		c.gridx = 1;
+		employeesPanel.add(employeesOpPanel, c);
+
+		//For the operations panel
+		GridBagConstraints d = new GridBagConstraints();
+		d.insets = new Insets(5, 0, 5, 0);
+		d.anchor = GridBagConstraints.WEST;
+		
+		employeesReadFile = new JButton("Einlesen");
+		d.gridy = 0;
+		employeesOpPanel.add(employeesReadFile, d);
+		
+		employeesSizePlus = new JButton("+");
+		d.gridy = 1;
+		employeesOpPanel.add(employeesSizePlus, d);
+		
+		employeesSizeMinus = new JButton("-");
+		d.gridy = 2;
+		employeesOpPanel.add(employeesSizeMinus, d);
+		
+		calculateEmployees = new JButton("Berechnen");
+		d.gridy = 3;
+		employeesOpPanel.add(calculateEmployees, d);
+		
+		employeesSaveChanges = new JButton("Speichern");
+		d.gridy = 4;
+		employeesOpPanel.add(employeesSaveChanges, d);
+		
+		deleteEmployeesTable = new JButton("Löschen");
+		d.gridy = 5;
+		employeesOpPanel.add(deleteEmployeesTable, d);
+		
+		employeesReadFile.setPreferredSize(standardOpButtonSize);
+		employeesSaveChanges.setPreferredSize(standardOpButtonSize);
+		employeesSizePlus.setPreferredSize(standardOpButtonSize);
+		employeesSizeMinus.setPreferredSize(standardOpButtonSize);
+		calculateEmployees.setPreferredSize(standardOpButtonSize);
+		deleteEmployeesTable.setPreferredSize(standardOpButtonSize);
+		
+		mainPanel.add(employeesPanel, BorderLayout.CENTER);
 		frame.setContentPane(mainPanel);
 		mainPanel.repaint();
+	}
+	
+	/**
+	 * Creates a new JFrame within the main frame and displays a matrix.
+	 * @param title The title of the new JFrame
+	 * @param matrix The matrix to be displayed
+	 * @param upperTriangularMatrix Whether or not the matrix is an upper triangular matrix; shows only lower triangle if true
+	 * @param extraText A small text that can be added below the matrix, for example for showing maximum flow.
+	 */
+	public void createMatrixResultFrame(String title, Object[][] matrix, boolean upperTriangularMatrix, String extraText) {
+		matrixResultFrame = new JFrame(title);
+		matrixResultPanel = new JPanel(new GridBagLayout());
+		matrixResultFrame.setSize(562, 562);
+		matrixResultFrame.setLocationRelativeTo(frame);
+		matrixResultFrame.setVisible(true);
+		matrixResultFrame.setContentPane(matrixResultPanel);
+		
+		String matrixAsString = "";
+		if(upperTriangularMatrix) {
+			matrix = FileManager.toLowerTriangle(matrix);
+		}
+		
+		for(int x = 0; x < matrix.length; x++) { //Adds the top headline of letters
+			matrixAsString = matrixAsString + letters[x] + " ";
+		}
+		
+		for(int i = 0; i < matrix.length; i++) {
+			String line = letters[i]; //Sets the letter for the row
+			for(int j = 0; j < matrix[i].length; j++) {
+				if(!(matrix[i][j] == null)) { //Skips over null values
+					line = line + " " + matrix[i][j]; //Constructs each line with the contents of the matrix
+				}
+			}
+			matrixAsString = matrixAsString + "<br>" + line;
+		}
+		matrixAsString = "<html><pre>  " + matrixAsString + "</pre></html>"; //Surrounds the String with html tags to enable line breaks in the JLabel; pre-tag to show spaces
+		
+		GridBagConstraints c = new GridBagConstraints();
+		JLabel matrixLabel = new JLabel(matrixAsString);
+		c.gridy = 0;
+		matrixLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+		matrixResultPanel.add(matrixLabel, c);
+		
+		if(extraText != null) {
+			JLabel extraLabel = new JLabel(extraText);
+			c.gridy = 1;
+			matrixResultPanel.add(extraLabel, c);
+		}
+	}
+	
+	/**
+	 * Creates a new JFrame within the main frame and displays a matrix.
+	 * @param title The title of the new JFrame
+	 * @param matrix The matrix to be displayed
+	 * @param upperTriangularMatrix Whether or not the matrix is an upper triangular matrix; shows only lower triangle if true
+	 */
+	public void createMatrixResultFrame(String title, Object[][] matrix, boolean upperTriangularMatrix) {
+		createMatrixResultFrame(title, matrix, upperTriangularMatrix, null);
+	}
+	
+	/**
+	 * Creates a pop-up JFrame that displays a list in which order the explosions happen
+	 * @param title The title of the pop-up.
+	 * @param stringArray An Array of Strings to be listed on the frame.
+	 */
+	public void createListResultFrame(String title, String[] stringArray) {
+		listResultFrame = new JFrame(title);
+		listResultPanel = new JPanel(new GridBagLayout()); //GridBag for centered Components
+		listResultFrame.setSize(562, 562);
+		listResultFrame.setLocationRelativeTo(frame);
+		listResultFrame.setVisible(true);
+		listResultFrame.setContentPane(listResultPanel);
+		
+		//Creates a String with the names and value of the vertices ordered by the value
+		String labelText = "";
+		
+		//Converts the stringArray into a String with HTML-<br>s as linebreaks
+		for(String s : stringArray) {
+			labelText += s + "<br>";
+		}
+		
+		labelText = "<html>" + labelText + "</html>"; //Wraps the text with html tags to allow linebreaks
+		
+		//Adds a JLabel with the labelText to the panel
+		GridBagConstraints c = new GridBagConstraints();
+		JLabel fireworksLabel = new JLabel(labelText);
+		fireworksLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
+		listResultPanel.add(fireworksLabel, c);
 	}
 	
 	//Places a Button to the main Menu on the specified JPanel that has a BorderLayout
