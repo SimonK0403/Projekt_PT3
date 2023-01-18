@@ -5,6 +5,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import Postman.*;
+import Traffic.*;
+import WaterSupply.*;
+import WorkDistribution.*;
+
 /**
  * The main class which provides most of the back-end functionality to the program
  */
@@ -331,7 +336,14 @@ public class CityManager {
 	}
 	private class CalculateWaterListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			waterData = readTable(screen.waterTable);
+			WaterSupply waterSupply = new WaterSupply();
+			waterSupply.getWaterSupply(waterData);
 			
+			Object[][] outputMatrix = waterSupply.outputWaterMatrix;
+			String maxFlow = waterSupply.maxFlow;
+			
+			screen.createMatrixResultFrame("Flussnetzwerk", outputMatrix, false, "Maximaler Durchfluss: " + maxFlow.toString());
 		}
 	}
 	private class DeleteWaterTableListener implements ActionListener {
