@@ -10,7 +10,7 @@ public class WorkDistribution {
     public static Object[][] input;
     public static final double capacity = 1;
     public static Object[][] outputWorkAssignmentMatrix;
-    public static Object[] outputWorkAssignment;
+    public static String[] outputWorkAssignment;
     public static double maxMatching;
     public static FordFulkerson fordFulkerson;
     public static int numOfVertices;
@@ -32,7 +32,7 @@ public class WorkDistribution {
 
         for (int i = 0; i < inputGraph.length; i++) {
             for (int j = 0; j < inputGraph.length; j++) {
-                input[i][j] = Integer.valueOf((String) inputGraph[i][j]);
+                input[i][j] = inputGraph[i][j];
             }
         }
         numOfVertices = (input.length * 2) + 2;
@@ -203,7 +203,7 @@ public class WorkDistribution {
     }
 
     private static void createWorkAssignment() {
-        outputWorkAssignment = new Object[(outputWorkAssignmentMatrix.length - 1)
+        outputWorkAssignment = new String[(outputWorkAssignmentMatrix.length - 1)
                 / 2];
 
         int resultMatrixLen = ((outputWorkAssignmentMatrix.length - 1) / 2) - 1;

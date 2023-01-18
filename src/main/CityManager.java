@@ -22,6 +22,7 @@ public class CityManager {
 	public Object[][] fireworksData;
 	public Object[][] invitationsData;
 	public Object[][] trafficData;
+	public Object[][] employeesData;
 	
 	public void run() {
 		screen = new Screen();
@@ -577,7 +578,13 @@ public class CityManager {
 	}
 	private class CalculateEmployeesListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-
+			employeesData = readTable(screen.employeesTable);
+			WorkDistribution workDistribution = new WorkDistribution();
+			workDistribution.getWorkDistribution(employeesData);
+			
+			String[] employeesAssignment = workDistribution.outputWorkAssignment;
+			screen.createListResultFrame("Verteilung der Aufgaben", employeesAssignment);
+			
 		}
 	}
 	private class DeleteEmployeesTableListener implements ActionListener {
