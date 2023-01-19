@@ -9,7 +9,7 @@ public class Postman {
     public static List<Integer> result;
     public static Object[][] output;
     public static Object[][] input;
-    public static String[] outputPostmanRoad;
+    public static String[] outputPostmanRoad = new String[1];
 
     /**
      * Check if the input array is a square matrix and symmetric matrix indicating
@@ -216,7 +216,7 @@ public class Postman {
     public static String toString(List<Integer> cycle) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < cycle.size(); i++) {
-            sb.append((char) (cycle.get(i) + 65)).append("-> ");
+            sb.append((char) (cycle.get(i) + 65)).append("->");
         }
         sb.setLength(sb.length() - 3);
         return sb.toString();
@@ -259,7 +259,7 @@ public class Postman {
                     eulerianMatrix = toMatrix(eulerianCycle, input);
 
                     printMatrix(eulerianMatrix);
-                    outputPostmanRoad[0] = "The Postman Road is: " + toString(eulerianCycle);
+                    outputPostmanRoad[0] = toString(eulerianCycle) + "A";
                     System.out.println(outputPostmanRoad[0]);
 
                 } else {
